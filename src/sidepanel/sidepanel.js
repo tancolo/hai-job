@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (hostname.includes('indeed.com')) {
         parserFile = 'src/content/parsers/indeed.js';
         parserFuncName = 'indeed';
+      } else if (hostname.includes('jobbank.gc.ca')) {
+        parserFile = 'src/content/parsers/jobbank.js';
+        parserFuncName = 'jobbank';
       }
 
       if (parserFile) {
