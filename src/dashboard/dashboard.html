@@ -12,7 +12,12 @@
     <header>
       <div class="header-content">
         <h1>Hai Job 投递收藏列表</h1>
-        <button id="btn-delete-all" class="btn danger">清空所有记录</button>
+        <div class="header-actions">
+          <input type="file" id="csv-file-input" accept=".csv" class="hidden">
+          <button id="btn-import-csv" class="btn secondary">导入 CSV</button>
+          <button id="btn-export-csv" class="btn secondary">导出 CSV</button>
+          <button id="btn-delete-all" class="btn danger">清空所有记录</button>
+        </div>
       </div>
 
       <div class="filter-bar">
@@ -103,9 +108,23 @@
         </div>
       </div>
     </div>
+    <!-- Import Modal -->
+    <div id="import-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>确认导入</h2>
+        <p id="import-message" style="margin: 12px 0;">读取文件成功。</p>
+        <p class="warning-text" style="color: var(--text-secondary); font-size: 13px; margin-bottom: 20px;">*重复项（公司名称与职位名称完全相同的记录）将被自动忽略。</p>
+        <div class="modal-actions">
+          <button id="btn-cancel-import" class="btn secondary">取消</button>
+          <button id="btn-confirm-import" class="btn primary">确认导入</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script src="../utils/storage.js"></script>
+  <script src="../utils/csv_util.js"></script>
   <script src="dashboard.js"></script>
 </body>
 </html>

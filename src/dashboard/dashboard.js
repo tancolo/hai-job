@@ -182,6 +182,100 @@ document.addEventListener('DOMContentLoaded', () => {
   filterInterview.addEventListener('change', applyFilters);
   filterPlatform.addEventListener('change', applyFilters);
 
+  // --- CSV Export Logic ---
+  const btnExportCsv = document.getElementById('btn-export-csv');
+  btnExportCsv.addEventListener('click', () => {
+    CsvUtil.exportToCSV(allJobs);
+  });
+
+  // --- CSV Import Logic ---
+  const btnImportCsv = document.getElementById('btn-import-csv');
+  const fileInput = document.getElementById('csv-file-input');
+  const importModal = document.getElementById('import-modal');
+  const btnCancelImport = document.getElementById('btn-cancel-import');
+  const btnConfirmImport = document.getElementById('btn-confirm-import');
+  const importMessage = document.getElementById('import-message');
+  
+  let pendingImportData = [];
+
+  btnImportCsv.addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      let text = event.target.result;
+      
+      // Excel on Windows often exports CSV in GBK/ANSI encoding. 
+      // If read as UTF-8, Chinese characters become ''.
+      if (text.includes('')) {
+        const readerGbk = new FileReader();
+        readerGbk.onload = function(eGbk) {
+          processCSVText(eGbk.target.result);
+        };
+        readerGbk.readAsText(file, 'GBK');
+      } else {
+        processCSVText(text);
+      }
+    };
+    reader.readAsText(file, 'UTF-8');
+    
+    function processCSVText(csvText) {
+      const parsedRows = CsvUtil.parseCSV(csvText);
+      if (parsedRows.length === 0) {
+        alert('CSV文件格式错误或为空');
+        fileInput.value = '';
+        return;
+      }
+      
+      pendingImportData = CsvUtil.processParsedCSV(parsedRows);
+      
+      if (pendingImportData.length === 0) {
+         alert('未能从CSV中解析出任何有效记录（可能缺少表头或文件编码无法识别）。请确保第一行包含"公司名称"和"职位信息"。');
+         fileInput.value = '';
+         return;
+      }
+      
+      importMessage.textContent = `成功解析文件！包含 ${pendingImportData.length} 条数据，是否确认导入？`;
+      importModal.classList.remove('hidden');
+    }
+  });
+
+  btnCancelImport.addEventListener('click', () => {
+    importModal.classList.add('hidden');
+    fileInput.value = '';
+    pendingImportData = [];
+  });
+
+  btnConfirmImport.addEventListener('click', async () => {
+    let importCount = 0;
+    let duplicateCount = 0;
+    
+    for (const newJob of pendingImportData) {
+      // 查重：公司名称与职位信息完全一致则忽略
+      const isDuplicate = allJobs.some(existingJob => 
+        existingJob.company === newJob.company && existingJob.title === newJob.title
+      );
+      
+      if (isDuplicate) {
+        duplicateCount++;
+      } else {
+        await StorageUtil.saveJob(newJob);
+        importCount++;
+      }
+    }
+    
+    alert(`导入完成！\n成功导入新记录: ${importCount} 条\n忽略重复记录: ${duplicateCount} 条`);
+    importModal.classList.add('hidden');
+    fileInput.value = '';
+    pendingImportData = [];
+    loadData(); // Re-render table
+  });
+
   // Initial load
   loadData();
 });
