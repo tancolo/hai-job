@@ -42,8 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const hostname = urlObj.hostname;
 
       let parserFile = null;
+      let parserFuncName = null;
+
       if (hostname.includes('linkedin.com')) {
         parserFile = 'src/content/parsers/linkedin.js';
+        parserFuncName = 'linkedin';
+      } else if (hostname.includes('indeed.com')) {
+        parserFile = 'src/content/parsers/indeed.js';
+        parserFuncName = 'indeed';
       }
 
       if (parserFile) {
@@ -57,10 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // Execute a function in the page context to run the parser
       const results = await chrome.scripting.executeScript({
         target: { tabId: tab.id },
-        func: () => {
-           const host = window.location.hostname;
-           if (host.includes('linkedin.com') && window.HaiJobParsers && window.HaiJobParsers.linkedin) {
-             return window.HaiJobParsers.linkedin();
+        args: [parserFuncName],
+        func: (parserName) => {
+           if (parserName && window.HaiJobParsers && window.HaiJobParsers[parserName]) {
+             return window.HaiJobParsers[parserName]();
            }
            // Fallback if not a supported board
            return {
