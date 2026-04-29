@@ -8,14 +8,55 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCancelDelete = document.getElementById('btn-cancel-delete');
   const btnConfirmDelete = document.getElementById('btn-confirm-delete');
 
+  let allJobs = []; // Module level cache for all jobs
+
+  // Filtering Elements
+  const searchInput = document.getElementById('search-input');
+  const filterWorkType = document.getElementById('filter-work-type');
+  const filterInterview = document.getElementById('filter-interview');
+  const filterPlatform = document.getElementById('filter-platform');
+
   // Load and render data
   async function loadData() {
     try {
-      const jobs = await StorageUtil.getJobs();
-      renderTable(jobs);
+      allJobs = await StorageUtil.getJobs();
+      applyFilters(); // Apply current filters and render
     } catch (err) {
-      console.error("Failed to load jobs", err);
+      console.error('Failed to load data:', err);
+      alert('加载数据失败: ' + err.message);
     }
+  }
+
+  // Apply filters and search
+  function applyFilters() {
+    const searchText = searchInput.value.toLowerCase().trim();
+    const workTypeValue = filterWorkType.value;
+    const interviewValue = filterInterview.value;
+    const platformValue = filterPlatform.value;
+
+    const filteredJobs = allJobs.filter(job => {
+      // 1. Search text matches company, city, or title
+      const company = (job.company || '').toLowerCase();
+      const city = (job.location || '').toLowerCase();
+      const title = (job.title || '').toLowerCase();
+      
+      const matchesSearch = searchText === '' || 
+                            company.includes(searchText) || 
+                            city.includes(searchText) || 
+                            title.includes(searchText);
+
+      // 2. Dropdown filters
+      const matchesWorkType = workTypeValue === 'all' || job.workType === workTypeValue;
+      const matchesInterview = interviewValue === 'all' || job.interviewStatus === interviewValue;
+      // Handle "否" correctly
+      if (interviewValue === '否' && job.interviewStatus !== '否') return false;
+
+      const matchesPlatform = platformValue === 'all' || (job.platform && job.platform.toLowerCase() === platformValue.toLowerCase());
+
+      return matchesSearch && matchesWorkType && matchesInterview && matchesPlatform;
+    });
+
+    renderTable(filteredJobs);
   }
 
   function renderTable(jobs) {
@@ -77,6 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const newStatus = e.target.value;
         try {
            await StorageUtil.updateJob(id, { interviewStatus: newStatus });
+           
+           // Update memory cache so filters keep working accurately
+           const jobIndex = allJobs.findIndex(j => j.id === id);
+           if(jobIndex > -1) {
+             allJobs[jobIndex].interviewStatus = newStatus;
+           }
+
            // Create visual feedback
            e.target.style.borderColor = 'var(--success-color, #10B981)';
            setTimeout(() => { e.target.style.borderColor = ''; }, 1000);
@@ -127,6 +175,12 @@ document.addEventListener('DOMContentLoaded', () => {
          .replace(/"/g, "&quot;")
          .replace(/'/g, "&#039;");
   }
+
+  // Event Listeners for Filters
+  searchInput.addEventListener('input', applyFilters);
+  filterWorkType.addEventListener('change', applyFilters);
+  filterInterview.addEventListener('change', applyFilters);
+  filterPlatform.addEventListener('change', applyFilters);
 
   // Initial load
   loadData();

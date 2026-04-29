@@ -14,6 +14,53 @@
         <h1>Hai Job 投递收藏列表</h1>
         <button id="btn-delete-all" class="btn danger">清空所有记录</button>
       </div>
+
+      <div class="filter-bar">
+        <div class="search-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="search-input" placeholder="搜索公司、城市或职位...">
+        </div>
+        
+        <div class="filters-wrapper">
+          <div class="filter-group">
+            <label for="filter-work-type">工作类型</label>
+            <select id="filter-work-type">
+              <option value="all">全部</option>
+              <option value="On-site">On-site</option>
+              <option value="Remote">Remote</option>
+              <option value="Hybrid">Hybrid</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="filter-interview">面试进度</label>
+            <select id="filter-interview">
+              <option value="all">全部</option>
+              <option value="否">否 (暂无)</option>
+              <option value="是">是</option>
+              <option value="一面">一面</option>
+              <option value="二面">二面</option>
+              <option value="三面">三面</option>
+              <option value="四面">四面</option>
+              <option value="终面">终面</option>
+              <option value="录用">录用</option>
+              <option value="被拒">被拒</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="filter-platform">投递平台</label>
+            <select id="filter-platform">
+              <option value="all">全部</option>
+              <option value="Linkedin">Linkedin</option>
+              <option value="Indeed">Indeed</option>
+              <option value="Jobbank">Jobbank</option>
+              <option value="N/A">N/A</option>
+              <option value="others">其他</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </header>
 
     <main>
