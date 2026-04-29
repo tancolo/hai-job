@@ -154,7 +154,12 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       await StorageUtil.saveJob(jobData);
       showToast();
-      // Optional: Clear form after saving? For now we keep it so user can edit.
+      
+      // Auto redirect to dashboard after a short delay
+      setTimeout(() => {
+        chrome.tabs.create({ url: 'src/dashboard/dashboard.html' });
+        window.close();
+      }, 1500);
     } catch (err) {
       console.error('Failed to save job:', err);
       alert('保存失败: ' + err.message);
@@ -163,8 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle View All Button
   btnViewAll.addEventListener('click', () => {
-    // Open the dashboard page in a new tab
+    // Open the dashboard page in a new tab and close sidepanel
     chrome.tabs.create({ url: 'src/dashboard/dashboard.html' });
+    window.close();
   });
 
   // Show success toast
