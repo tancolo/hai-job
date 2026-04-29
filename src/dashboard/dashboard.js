@@ -41,13 +41,22 @@ document.addEventListener('DOMContentLoaded', () => {
         ? `<a href="${job.url}" target="_blank" class="link">链接</a>` 
         : 'N/A';
 
+      const statusOptions = ['否', '是', '一面', '二面', '三面', '四面', '终面', '录用', '被拒'];
+      let selectHtml = `<select class="status-select" data-id="${job.id}">`;
+      statusOptions.forEach(opt => {
+        const selected = (job.interviewStatus === opt) ? 'selected' : '';
+        const label = (opt === '否') ? '否 (暂无面试)' : opt;
+        selectHtml += `<option value="${opt}" ${selected}>${label}</option>`;
+      });
+      selectHtml += `</select>`;
+
       tr.innerHTML = `
         <td>${escapeHtml(job.date || '')}</td>
         <td><strong>${escapeHtml(job.company || '')}</strong></td>
         <td>${escapeHtml(job.location || '')}</td>
         <td>${escapeHtml(job.title || '')}</td>
         <td>${escapeHtml(job.workType || '')}</td>
-        <td>${escapeHtml(job.interviewStatus || '')}</td>
+        <td>${selectHtml}</td>
         <td>${escapeHtml(job.source || '')}</td>
         <td>${escapeHtml(job.platform || '')}</td>
         <td>${linkHtml}</td>
@@ -59,6 +68,23 @@ document.addEventListener('DOMContentLoaded', () => {
         </td>
       `;
       tbody.appendChild(tr);
+    });
+
+    // Attach status change listeners
+    document.querySelectorAll('.status-select').forEach(select => {
+      select.addEventListener('change', async (e) => {
+        const id = e.target.getAttribute('data-id');
+        const newStatus = e.target.value;
+        try {
+           await StorageUtil.updateJob(id, { interviewStatus: newStatus });
+           // Create visual feedback
+           e.target.style.borderColor = 'var(--success-color, #10B981)';
+           setTimeout(() => { e.target.style.borderColor = ''; }, 1000);
+        } catch(err) {
+           console.error("Failed to update status", err);
+           alert("更新状态失败");
+        }
+      });
     });
 
     // Attach delete listeners

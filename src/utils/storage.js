@@ -46,6 +46,39 @@ const StorageUtil = {
     });
   },
 
+  // Update a specific job record by ID
+  updateJob: async (jobId, updatedFields) => {
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.get(['jobs'], (result) => {
+        if (chrome.runtime.lastError) {
+          return reject(chrome.runtime.lastError);
+        }
+        
+        let jobs = result.jobs || [];
+        let updated = false;
+        
+        jobs = jobs.map(job => {
+          if (job.id === jobId) {
+            updated = true;
+            return { ...job, ...updatedFields };
+          }
+          return job;
+        });
+        
+        if (!updated) {
+          return resolve(false); // Job not found
+        }
+        
+        chrome.storage.local.set({ jobs: jobs }, () => {
+          if (chrome.runtime.lastError) {
+            return reject(chrome.runtime.lastError);
+          }
+          resolve(true);
+        });
+      });
+    });
+  },
+
   // Delete a specific job record by ID
   deleteJob: async (jobId) => {
     return new Promise((resolve, reject) => {
