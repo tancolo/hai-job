@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hai Job 投递收藏列表</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <h1>Hai Job 投递收藏列表</h1>
+        <button id="btn-delete-all" class="btn danger">清空所有记录</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="table-container">
+        <table id="jobs-table">
+          <thead>
+            <tr>
+              <th>投递时间</th>
+              <th>公司名称</th>
+              <th>城市</th>
+              <th>职位信息</th>
+              <th>工作类型</th>
+              <th>面试进度</th>
+              <th>职位来源</th>
+              <th>投递平台</th>
+              <th>职位链接</th>
+              <th>备注</th>
+              <th class="actions-col">操作</th>
+            </tr>
+          </thead>
+          <tbody id="jobs-tbody">
+            <!-- Jobs will be rendered here -->
+          </tbody>
+        </table>
+        
+        <div id="empty-state" class="empty-state hidden">
+          <p>暂无投递记录，快去申请你心仪的职位吧！</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal for Delete Confirmation -->
+    <div id="delete-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>警告：清空所有记录</h3>
+        <p>此操作将永久删除您收藏的所有投递记录，且无法恢复。是否继续？</p>
+        <div class="modal-actions">
+          <button id="btn-cancel-delete" class="btn secondary">取消</button>
+          <button id="btn-confirm-delete" class="btn danger">确认删除</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../utils/storage.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
