@@ -3,109 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hai Job Tracker</title>
+  <title data-i18n="extName">Hai Job Tracker</title>
   <link rel="stylesheet" href="sidepanel.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../utils/i18n.js"></script>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Hai Job</h1>
+      <h1 data-i18n="panelTitle">Hai Job</h1>
       <p class="subtitle">Job Tracker</p>
     </header>
 
     <div id="loading-overlay" class="hidden">
       <div class="spinner"></div>
-      <p>正在分析网页中...</p>
+      <p data-i18n="msgAnalyzing">正在分析网页中...</p>
     </div>
 
     <form id="job-form">
       <div class="form-group">
-        <label for="date">投递时间</label>
+        <label for="date" data-i18n="lblDate">投递时间</label>
         <input type="date" id="date" name="date" required>
       </div>
 
       <div class="form-group">
-        <label for="company">公司名称</label>
-        <input type="text" id="company" name="company" placeholder="例如：Morgan Stanley" required>
+        <label for="company" data-i18n="lblCompany">公司名称</label>
+        <input type="text" id="company" name="company" data-i18n="phCompany" placeholder="例如：Morgan Stanley" required>
       </div>
 
       <div class="form-group">
-        <label for="location">城市</label>
-        <input type="text" id="location" name="location" placeholder="例如：Calgary, AB">
+        <label for="location" data-i18n="lblCity">城市</label>
+        <input type="text" id="location" name="location" data-i18n="phCity" placeholder="例如：Calgary, AB">
       </div>
 
       <div class="form-group">
-        <label for="title">职位信息</label>
-        <input type="text" id="title" name="title" placeholder="例如：Snr Android App Developer" required>
+        <label for="title" data-i18n="lblTitle">职位信息</label>
+        <input type="text" id="title" name="title" data-i18n="phTitle" placeholder="例如：Snr Android App Developer" required>
       </div>
 
       <div class="form-group">
-        <label for="workType">工作类型</label>
+        <label for="workType" data-i18n="lblWorkType">工作类型</label>
         <div class="select-wrapper">
           <select id="workType" name="workType">
             <option value="Hybrid">Hybrid</option>
             <option value="Remote">Remote</option>
             <option value="On-site">On-site</option>
-            <option value="custom">-- 添加新类别 --</option>
+            <option value="custom" data-i18n="optCustom">-- 添加新类别 --</option>
           </select>
-          <input type="text" id="customWorkType" class="hidden" placeholder="输入自定义类型">
+          <input type="text" id="customWorkType" class="hidden" data-i18n="phCustomWorkType" placeholder="输入自定义类型">
         </div>
       </div>
 
       <div class="form-group">
-        <label for="interviewStatus">面试进度</label>
+        <label for="interviewStatus" data-i18n="lblInterview">面试进度</label>
         <select id="interviewStatus" name="interviewStatus">
-          <option value="否">否 (暂无面试)</option>
-          <option value="是">是</option>
-          <option value="一面">一面</option>
-          <option value="二面">二面</option>
-          <option value="三面">三面</option>
-          <option value="四面">四面</option>
-          <option value="终面">终面</option>
-          <option value="录用">录用</option>
-          <option value="被拒">被拒</option>
+          <option value="否" data-i18n="intStatusNo">否 (暂无面试)</option>
+          <option value="是" data-i18n="intStatusYes">是</option>
+          <option value="一面" data-i18n="intStatusRound1">一面</option>
+          <option value="二面" data-i18n="intStatusRound2">二面</option>
+          <option value="三面" data-i18n="intStatusRound3">三面</option>
+          <option value="四面" data-i18n="intStatusRound4">四面</option>
+          <option value="终面" data-i18n="intStatusFinal">终面</option>
+          <option value="录用" data-i18n="intStatusOffer">录用</option>
+          <option value="被拒" data-i18n="intStatusRejected">被拒</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="source">职位来源</label>
+        <label for="source" data-i18n="lblSource">职位来源</label>
         <select id="source" name="source">
-          <option value="自投">自投</option>
-          <option value="暂未投递">暂未投递</option>
-          <option value="猎头推荐">猎头推荐 (Recruiter)</option>
-          <option value="内推">内推</option>
+          <option value="自投" data-i18n="srcSelf">自投</option>
+          <option value="暂未投递" data-i18n="srcNotApplied">暂未投递</option>
+          <option value="猎头推荐" data-i18n="srcRecruiter">猎头推荐 (Recruiter)</option>
+          <option value="内推" data-i18n="srcReferral">内推</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="platform">投递平台</label>
+        <label for="platform" data-i18n="lblPlatform">投递平台</label>
         <select id="platform" name="platform">
           <option value="Linkedin">Linkedin</option>
           <option value="Indeed">Indeed</option>
           <option value="Jobbank">Jobbank</option>
-          <option value="N/A">N/A (未知/猎头)</option>
-          <option value="others">其他 (Others)</option>
+          <option value="N/A">N/A</option>
+          <option value="others">Others</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="url">职位链接</label>
-        <input type="url" id="url" name="url" placeholder="自动提取当前网页链接">
+        <label for="url" data-i18n="lblUrl">职位链接</label>
+        <input type="url" id="url" name="url" data-i18n="phUrl" placeholder="自动提取当前网页链接">
       </div>
 
       <div class="form-group">
-        <label for="notes">备注</label>
-        <textarea id="notes" name="notes" rows="3" placeholder="添加备注信息..."></textarea>
+        <label for="notes" data-i18n="lblNotes">备注</label>
+        <textarea id="notes" name="notes" rows="3" data-i18n="phNotes" placeholder="添加备注信息..."></textarea>
       </div>
 
       <div class="actions">
-        <button type="submit" id="btn-save" class="btn primary">保存投递</button>
-        <button type="button" id="btn-view-all" class="btn secondary">查看所有</button>
+        <button type="submit" id="btn-save" class="btn primary" data-i18n="btnSave">保存投递</button>
+        <button type="button" id="btn-view-all" class="btn secondary" data-i18n="btnViewAll">查看所有</button>
       </div>
     </form>
     
-    <div id="toast" class="toast hidden">保存成功！</div>
+    <div id="toast" class="toast hidden" data-i18n="msgSaveSuccess">保存成功！</div>
   </div>
 
   <script src="../utils/storage.js"></script>

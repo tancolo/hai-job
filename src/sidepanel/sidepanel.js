@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const customWorkTypeInput = document.getElementById('customWorkType');
   const loadingOverlay = document.getElementById('loading-overlay');
   const btnViewAll = document.getElementById('btn-view-all');
+  const btnSave = document.getElementById('btn-save');
   const toast = document.getElementById('toast');
+  let loadingTimeout;
 
   // Set today's date as default
   const today = new Date().toISOString().split('T')[0];
@@ -23,75 +25,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Request scraped data from content script
   async function scrapeCurrentPage() {
-    loadingOverlay.classList.remove('hidden');
-    
-    // Safety timeout: forcefully hide spinner after 4 seconds
-    const timeoutId = setTimeout(() => {
-      loadingOverlay.classList.add('hidden');
-      console.warn("Scraping timed out or page not supported.");
-    }, 4000);
+    chrome.tabs.query({active: true, currentWindow: true}, async function(tabs) {
+      if (tabs[0]) {
+        loadingOverlay.classList.remove('hidden');
+        btnSave.disabled = true;
+        btnSave.textContent = chrome.i18n.getMessage("msgAnalyzing") || '处理中...';
+        
+        loadingTimeout = setTimeout(() => {
+          hideLoading();
+          console.warn("Scraping timed out or page not supported.");
+        }, 4000);
 
-    try {
-      // Get current active tab
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      if (!tab || !tab.url) {
-        throw new Error('No active tab found or missing URL permissions.');
-      }
+        try {
+          const tab = tabs[0];
+          const urlObj = new URL(tab.url);
+          const hostname = urlObj.hostname;
 
-      const urlObj = new URL(tab.url);
-      const hostname = urlObj.hostname;
+          let parserFile = null;
+          let parserFuncName = null;
 
-      let parserFile = null;
-      let parserFuncName = null;
+          if (hostname.includes('linkedin.com')) {
+            parserFile = 'src/content/parsers/linkedin.js';
+            parserFuncName = 'linkedin';
+          } else if (hostname.includes('indeed.com')) {
+            parserFile = 'src/content/parsers/indeed.js';
+            parserFuncName = 'indeed';
+          } else if (hostname.includes('jobbank.gc.ca')) {
+            parserFile = 'src/content/parsers/jobbank.js';
+            parserFuncName = 'jobbank';
+          }
 
-      if (hostname.includes('linkedin.com')) {
-        parserFile = 'src/content/parsers/linkedin.js';
-        parserFuncName = 'linkedin';
-      } else if (hostname.includes('indeed.com')) {
-        parserFile = 'src/content/parsers/indeed.js';
-        parserFuncName = 'indeed';
-      } else if (hostname.includes('jobbank.gc.ca')) {
-        parserFile = 'src/content/parsers/jobbank.js';
-        parserFuncName = 'jobbank';
-      }
+          if (parserFile) {
+            await chrome.scripting.executeScript({
+              target: { tabId: tab.id },
+              files: [parserFile]
+            });
+          }
 
-      if (parserFile) {
-        // Inject the parser logic directly
-        await chrome.scripting.executeScript({
-          target: { tabId: tab.id },
-          files: [parserFile]
-        });
-      }
+          const results = await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            args: [parserFuncName],
+            func: (parserName) => {
+               if (parserName && window.HaiJobParsers && window.HaiJobParsers[parserName]) {
+                 return window.HaiJobParsers[parserName]();
+               }
+               return {
+                 company: '',
+                 location: '',
+                 title: '',
+                 url: window.location.href,
+                 platform: 'others'
+               };
+            }
+          });
 
-      // Execute a function in the page context to run the parser
-      const results = await chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        args: [parserFuncName],
-        func: (parserName) => {
-           if (parserName && window.HaiJobParsers && window.HaiJobParsers[parserName]) {
-             return window.HaiJobParsers[parserName]();
-           }
-           // Fallback if not a supported board
-           return {
-             company: '',
-             location: '',
-             title: '',
-             url: window.location.href,
-             platform: 'others'
-           };
+          hideLoading();
+          if (results && results[0] && results[0].result) {
+            populateForm(results[0].result);
+          }
+        } catch (err) {
+          console.error("Scraping failed:", err);
+          hideLoading();
         }
-      });
-
-      clearTimeout(timeoutId);
-      loadingOverlay.classList.add('hidden');
-
-      if (results && results[0] && results[0].result) {
-        populateForm(results[0].result);
       }
-    } catch (err) {
-      console.error("Scraping failed:", err);
-      clearTimeout(timeoutId);
+    });
+  }
+
+  function hideLoading() {
+    if (!loadingOverlay.classList.contains('hidden')) {
       loadingOverlay.classList.add('hidden');
+      btnSave.disabled = false;
+      btnSave.textContent = chrome.i18n.getMessage("btnSave") || '保存投递';
+      if (loadingTimeout) clearTimeout(loadingTimeout);
     }
   }
 
@@ -123,7 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (data.platform) {
       const platformSelect = document.getElementById('platform');
-      // Set value if it exists in options, else set to others
       let found = false;
       for (let i = 0; i < platformSelect.options.length; i++) {
         if (platformSelect.options[i].value.toLowerCase() === data.platform.toLowerCase()) {
@@ -141,43 +145,36 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handle Form Submission
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
-    // Get form values
     const formData = new FormData(form);
     const jobData = Object.fromEntries(formData.entries());
     
-    // Handle custom work type
     if (jobData.workType === 'custom') {
       jobData.workType = document.getElementById('customWorkType').value;
     }
-    
-    // Remove the customWorkType field from data to be saved
     delete jobData.customWorkType;
 
     try {
       await StorageUtil.saveJob(jobData);
-      showToast();
-      
-      // Auto redirect to dashboard after a short delay
+      showToast(chrome.i18n.getMessage("msgSaveSuccess") || '保存成功！');
       setTimeout(() => {
         chrome.tabs.create({ url: 'src/dashboard/dashboard.html' });
         window.close();
       }, 1500);
     } catch (err) {
-      console.error('Failed to save job:', err);
-      alert('保存失败: ' + err.message);
+      console.error('Save error:', err);
+      alert((chrome.i18n.getMessage("msgSaveFailed") || '保存失败: ') + err.message);
     }
   });
 
   // Handle View All Button
   btnViewAll.addEventListener('click', () => {
-    // Open the dashboard page in a new tab and close sidepanel
     chrome.tabs.create({ url: 'src/dashboard/dashboard.html' });
     window.close();
   });
 
   // Show success toast
-  function showToast() {
+  function showToast(msg) {
+    if (msg) toast.textContent = msg;
     toast.classList.remove('hidden');
     setTimeout(() => {
       toast.classList.add('hidden');

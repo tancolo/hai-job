@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Hai Job - 구직 트래커"
+  },
+  "extDesc": {
+    "message": "지원한 구직 정보를 기록하는 확장 프로그램입니다."
+  },
+  "lblDate": {
+    "message": "지원 날짜"
+  },
+  "lblCompany": {
+    "message": "회사명"
+  },
+  "lblCity": {
+    "message": "근무지"
+  },
+  "lblTitle": {
+    "message": "직무"
+  },
+  "lblWorkType": {
+    "message": "근무 형태"
+  },
+  "lblInterview": {
+    "message": "진행 상황"
+  },
+  "lblSource": {
+    "message": "지원 경로"
+  },
+  "lblPlatform": {
+    "message": "플랫폼"
+  },
+  "lblUrl": {
+    "message": "URL"
+  },
+  "lblNotes": {
+    "message": "메모"
+  },
+  "btnSave": {
+    "message": "저장"
+  },
+  "btnViewAll": {
+    "message": "모두 보기"
+  },
+  "btnImport": {
+    "message": "CSV 가져오기"
+  },
+  "btnExport": {
+    "message": "CSV 내보내기"
+  },
+  "btnClearAll": {
+    "message": "모두 지우기"
+  },
+  "btnCancel": {
+    "message": "취소"
+  },
+  "btnConfirm": {
+    "message": "확인"
+  },
+  "btnDelete": {
+    "message": "삭제"
+  },
+  "msgAnalyzing": {
+    "message": "분석 중..."
+  },
+  "msgSaveSuccess": {
+    "message": "저장되었습니다!"
+  },
+  "msgSaveFailed": {
+    "message": "저장 실패: "
+  },
+  "dashTitle": {
+    "message": "Hai Job - 지원 목록"
+  },
+  "searchPlaceholder": {
+    "message": "회사명, 근무지 또는 직무 검색..."
+  },
+  "optAll": {
+    "message": "전체"
+  },
+  "intStatusNo": {
+    "message": "면접 없음"
+  },
+  "intStatusYes": {
+    "message": "예"
+  },
+  "intStatusRound1": {
+    "message": "1차 면접"
+  },
+  "intStatusRound2": {
+    "message": "2차 면접"
+  },
+  "intStatusRound3": {
+    "message": "3차 면접"
+  },
+  "intStatusRound4": {
+    "message": "4차 면접"
+  },
+  "intStatusFinal": {
+    "message": "최종 면접"
+  },
+  "intStatusOffer": {
+    "message": "합격"
+  },
+  "intStatusRejected": {
+    "message": "불합격"
+  },
+  "srcRecruiter": {
+    "message": "헤드헌터"
+  },
+  "srcNotApplied": {
+    "message": "미지원"
+  },
+  "srcSelf": {
+    "message": "직접 지원"
+  },
+  "srcReferral": {
+    "message": "지인 추천"
+  },
+  "emptyState": {
+    "message": "지원 기록이 없습니다."
+  },
+  "delRowConfirm": {
+    "message": "이 기록을 삭제하시겠습니까?"
+  },
+  "delAllConfirmTitle": {
+    "message": "전체 삭제 확인"
+  },
+  "delAllConfirmMsg": {
+    "message": "모든 기록을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
+  },
+  "csvNoData": {
+    "message": "내보낼 데이터가 없습니다."
+  },
+  "csvFormatErr": {
+    "message": "CSV 형식 오류 또는 빈 파일입니다."
+  },
+  "csvNoValid": {
+    "message": "유효한 기록을 구문 분석할 수 없습니다."
+  },
+  "csvPreview": {
+    "message": "분석 완료! {count}개의 데이터가 있습니다. 가져오시겠습니까?"
+  },
+  "csvDuplicateWarn": {
+    "message": "*중복 기록(회사명과 직무가 일치)은 무시됩니다."
+  },
+  "csvSummary": {
+    "message": "가져오기 완료!\n성공: {imp}건\n중복 무시: {dup}건"
+  },
+  "phCompany": {
+    "message": "예: Morgan Stanley"
+  },
+  "phCity": {
+    "message": "예: Calgary, AB"
+  },
+  "phTitle": {
+    "message": "예: Snr Android App Developer"
+  },
+  "phCustomWorkType": {
+    "message": "사용자 지정 유형 입력"
+  },
+  "phUrl": {
+    "message": "현재 웹페이지에서 자동 추출"
+  },
+  "phNotes": {
+    "message": "메모 추가..."
+  },
+  "optCustom": {
+    "message": "-- 새 범주 추가 --"
+  }
+}

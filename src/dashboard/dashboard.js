@@ -75,21 +75,41 @@ document.addEventListener('DOMContentLoaded', () => {
     btnDeleteAll.disabled = false;
     btnDeleteAll.style.opacity = '1';
 
+    const srcMap = {
+      '自投': chrome.i18n.getMessage("srcSelf"),
+      '暂未投递': chrome.i18n.getMessage("srcNotApplied"),
+      '猎头推荐': chrome.i18n.getMessage("srcRecruiter"),
+      '内推': chrome.i18n.getMessage("srcReferral")
+    };
+
+    const statusMap = {
+      '否': chrome.i18n.getMessage("intStatusNo"),
+      '是': chrome.i18n.getMessage("intStatusYes"),
+      '一面': chrome.i18n.getMessage("intStatusRound1"),
+      '二面': chrome.i18n.getMessage("intStatusRound2"),
+      '三面': chrome.i18n.getMessage("intStatusRound3"),
+      '四面': chrome.i18n.getMessage("intStatusRound4"),
+      '终面': chrome.i18n.getMessage("intStatusFinal"),
+      '录用': chrome.i18n.getMessage("intStatusOffer"),
+      '被拒': chrome.i18n.getMessage("intStatusRejected")
+    };
+
     jobs.forEach(job => {
       const tr = document.createElement('tr');
       
       const linkHtml = job.url && job.url !== 'N/A' 
-        ? `<a href="${job.url}" target="_blank" class="link">链接</a>` 
+        ? `<a href="${job.url}" target="_blank" class="link">🔗</a>` 
         : 'N/A';
 
       const statusOptions = ['否', '是', '一面', '二面', '三面', '四面', '终面', '录用', '被拒'];
       let selectHtml = `<select class="status-select" data-id="${job.id}">`;
       statusOptions.forEach(opt => {
         const selected = (job.interviewStatus === opt) ? 'selected' : '';
-        const label = (opt === '否') ? '否 (暂无面试)' : opt;
-        selectHtml += `<option value="${opt}" ${selected}>${label}</option>`;
+        selectHtml += `<option value="${opt}" ${selected}>${statusMap[opt] || opt}</option>`;
       });
       selectHtml += `</select>`;
+
+      const displaySource = srcMap[job.source] || job.source;
 
       tr.innerHTML = `
         <td>${escapeHtml(job.date || '')}</td>
@@ -98,14 +118,14 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${escapeHtml(job.title || '')}</td>
         <td>${escapeHtml(job.workType || '')}</td>
         <td>${selectHtml}</td>
-        <td>${escapeHtml(job.source || '')}</td>
+        <td>${escapeHtml(displaySource)}</td>
         <td>${escapeHtml(job.platform || '')}</td>
         <td>${linkHtml}</td>
         <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${escapeHtml(job.notes || '')}">
           ${escapeHtml(job.notes || '')}
         </td>
         <td class="actions-col">
-          <button class="btn-delete-row" data-id="${job.id}">删除</button>
+          <button class="btn-delete-row" data-id="${job.id}">${chrome.i18n.getMessage("btnDelete")}</button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -130,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
            setTimeout(() => { e.target.style.borderColor = ''; }, 1000);
         } catch(err) {
            console.error("Failed to update status", err);
-           alert("更新状态失败");
+           alert(chrome.i18n.getMessage("msgSaveFailed") + err.message);
         }
       });
     });
@@ -139,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-delete-row').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         const id = e.target.getAttribute('data-id');
-        if (confirm('确认删除这条记录吗？')) {
+        if (confirm(chrome.i18n.getMessage("delRowConfirm"))) {
           await StorageUtil.deleteJob(id);
           loadData(); // Re-render
         }
@@ -227,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function processCSVText(csvText) {
       const parsedRows = CsvUtil.parseCSV(csvText);
       if (parsedRows.length === 0) {
-        alert('CSV文件格式错误或为空');
+        alert(chrome.i18n.getMessage("csvFormatErr"));
         fileInput.value = '';
         return;
       }
@@ -235,12 +255,12 @@ document.addEventListener('DOMContentLoaded', () => {
       pendingImportData = CsvUtil.processParsedCSV(parsedRows);
       
       if (pendingImportData.length === 0) {
-         alert('未能从CSV中解析出任何有效记录（可能缺少表头或文件编码无法识别）。请确保第一行包含"公司名称"和"职位信息"。');
+         alert(chrome.i18n.getMessage("csvNoValid"));
          fileInput.value = '';
          return;
       }
       
-      importMessage.textContent = `成功解析文件！包含 ${pendingImportData.length} 条数据，是否确认导入？`;
+      importMessage.textContent = chrome.i18n.getMessage("csvPreview").replace("{count}", pendingImportData.length);
       importModal.classList.remove('hidden');
     }
   });
@@ -269,7 +289,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     
-    alert(`导入完成！\n成功导入新记录: ${importCount} 条\n忽略重复记录: ${duplicateCount} 条`);
+    const summaryMsg = chrome.i18n.getMessage("csvSummary")
+      .replace("{imp}", importCount)
+      .replace("{dup}", duplicateCount);
+    
+    alert(summaryMsg);
     importModal.classList.add('hidden');
     fileInput.value = '';
     pendingImportData = [];

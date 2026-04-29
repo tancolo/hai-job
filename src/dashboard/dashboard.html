@@ -3,34 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hai Job 投递收藏列表</title>
+  <title data-i18n="dashTitle">Hai Job 投递收藏列表</title>
   <link rel="stylesheet" href="dashboard.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="../utils/i18n.js"></script>
 </head>
 <body>
   <div class="container">
     <header>
       <div class="header-content">
-        <h1>Hai Job 投递收藏列表</h1>
+        <h1 data-i18n="dashTitle">Hai Job 投递收藏列表</h1>
         <div class="header-actions">
           <input type="file" id="csv-file-input" accept=".csv" class="hidden">
-          <button id="btn-import-csv" class="btn secondary">导入 CSV</button>
-          <button id="btn-export-csv" class="btn secondary">导出 CSV</button>
-          <button id="btn-delete-all" class="btn danger">清空所有记录</button>
+          <button id="btn-import-csv" class="btn secondary" data-i18n="btnImport">导入 CSV</button>
+          <button id="btn-export-csv" class="btn secondary" data-i18n="btnExport">导出 CSV</button>
+          <button id="btn-delete-all" class="btn danger" data-i18n="btnClearAll">清空所有记录</button>
         </div>
       </div>
 
       <div class="filter-bar">
         <div class="search-wrapper">
           <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="text" id="search-input" placeholder="搜索公司、城市或职位...">
+          <input type="text" id="search-input" data-i18n="searchPlaceholder" placeholder="搜索公司、城市或职位...">
         </div>
         
         <div class="filters-wrapper">
           <div class="filter-group">
-            <label for="filter-work-type">工作类型</label>
+            <label for="filter-work-type" data-i18n="lblWorkType">工作类型</label>
             <select id="filter-work-type">
-              <option value="all">全部</option>
+              <option value="all" data-i18n="optAll">全部</option>
               <option value="On-site">On-site</option>
               <option value="Remote">Remote</option>
               <option value="Hybrid">Hybrid</option>
@@ -38,25 +39,25 @@
           </div>
           
           <div class="filter-group">
-            <label for="filter-interview">面试进度</label>
+            <label for="filter-interview" data-i18n="lblInterview">面试进度</label>
             <select id="filter-interview">
-              <option value="all">全部</option>
-              <option value="否">否 (暂无)</option>
-              <option value="是">是</option>
-              <option value="一面">一面</option>
-              <option value="二面">二面</option>
-              <option value="三面">三面</option>
-              <option value="四面">四面</option>
-              <option value="终面">终面</option>
-              <option value="录用">录用</option>
-              <option value="被拒">被拒</option>
+              <option value="all" data-i18n="optAll">全部</option>
+              <option value="否" data-i18n="intStatusNo">否 (暂无)</option>
+              <option value="是" data-i18n="intStatusYes">是</option>
+              <option value="一面" data-i18n="intStatusRound1">一面</option>
+              <option value="二面" data-i18n="intStatusRound2">二面</option>
+              <option value="三面" data-i18n="intStatusRound3">三面</option>
+              <option value="四面" data-i18n="intStatusRound4">四面</option>
+              <option value="终面" data-i18n="intStatusFinal">终面</option>
+              <option value="录用" data-i18n="intStatusOffer">录用</option>
+              <option value="被拒" data-i18n="intStatusRejected">被拒</option>
             </select>
           </div>
           
           <div class="filter-group">
-            <label for="filter-platform">投递平台</label>
+            <label for="filter-platform" data-i18n="lblPlatform">投递平台</label>
             <select id="filter-platform">
-              <option value="all">全部</option>
+              <option value="all" data-i18n="optAll">全部</option>
               <option value="Linkedin">Linkedin</option>
               <option value="Indeed">Indeed</option>
               <option value="Jobbank">Jobbank</option>
@@ -73,17 +74,17 @@
         <table id="jobs-table">
           <thead>
             <tr>
-              <th>投递时间</th>
-              <th>公司名称</th>
-              <th>城市</th>
-              <th>职位信息</th>
-              <th>工作类型</th>
-              <th>面试进度</th>
-              <th>职位来源</th>
-              <th>投递平台</th>
-              <th>职位链接</th>
-              <th>备注</th>
-              <th class="actions-col">操作</th>
+              <th data-i18n="lblDate">投递时间</th>
+              <th data-i18n="lblCompany">公司名称</th>
+              <th data-i18n="lblCity">城市</th>
+              <th data-i18n="lblTitle">职位信息</th>
+              <th data-i18n="lblWorkType">工作类型</th>
+              <th data-i18n="lblInterview">面试进度</th>
+              <th data-i18n="lblSource">职位来源</th>
+              <th data-i18n="lblPlatform">投递平台</th>
+              <th data-i18n="lblUrl">职位链接</th>
+              <th data-i18n="lblNotes">备注</th>
+              <th class="actions-col"></th>
             </tr>
           </thead>
           <tbody id="jobs-tbody">
@@ -92,7 +93,7 @@
         </table>
         
         <div id="empty-state" class="empty-state hidden">
-          <p>暂无投递记录，快去申请你心仪的职位吧！</p>
+          <p data-i18n="emptyState">暂无投递记录，快去申请你心仪的职位吧！</p>
         </div>
       </div>
     </main>
@@ -100,23 +101,23 @@
     <!-- Modal for Delete Confirmation -->
     <div id="delete-modal" class="modal hidden">
       <div class="modal-content">
-        <h3>警告：清空所有记录</h3>
-        <p>此操作将永久删除您收藏的所有投递记录，且无法恢复。是否继续？</p>
+        <h3 data-i18n="delAllConfirmTitle">警告：清空所有记录</h3>
+        <p data-i18n="delAllConfirmMsg">此操作将永久删除您收藏的所有投递记录，且无法恢复。是否继续？</p>
         <div class="modal-actions">
-          <button id="btn-cancel-delete" class="btn secondary">取消</button>
-          <button id="btn-confirm-delete" class="btn danger">确认删除</button>
+          <button id="btn-cancel-delete" class="btn secondary" data-i18n="btnCancel">取消</button>
+          <button id="btn-confirm-delete" class="btn danger" data-i18n="btnConfirm">确认删除</button>
         </div>
       </div>
     </div>
     <!-- Import Modal -->
     <div id="import-modal" class="modal hidden">
       <div class="modal-content">
-        <h2>确认导入</h2>
+        <h2 data-i18n="btnImport">确认导入</h2>
         <p id="import-message" style="margin: 12px 0;">读取文件成功。</p>
-        <p class="warning-text" style="color: var(--text-secondary); font-size: 13px; margin-bottom: 20px;">*重复项（公司名称与职位名称完全相同的记录）将被自动忽略。</p>
+        <p class="warning-text" data-i18n="csvDuplicateWarn" style="color: var(--text-secondary); font-size: 13px; margin-bottom: 20px;">*重复项（公司名称与职位名称完全相同的记录）将被自动忽略。</p>
         <div class="modal-actions">
-          <button id="btn-cancel-import" class="btn secondary">取消</button>
-          <button id="btn-confirm-import" class="btn primary">确认导入</button>
+          <button id="btn-cancel-import" class="btn secondary" data-i18n="btnCancel">取消</button>
+          <button id="btn-confirm-import" class="btn primary" data-i18n="btnConfirm">确认导入</button>
         </div>
       </div>
     </div>

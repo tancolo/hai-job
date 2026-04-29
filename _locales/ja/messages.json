@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Hai Job - 就職トラッカー"
+  },
+  "extDesc": {
+    "message": "就職活動の応募状況を記録する拡張機能。"
+  },
+  "lblDate": {
+    "message": "応募日"
+  },
+  "lblCompany": {
+    "message": "会社名"
+  },
+  "lblCity": {
+    "message": "勤務地"
+  },
+  "lblTitle": {
+    "message": "職種"
+  },
+  "lblWorkType": {
+    "message": "勤務形態"
+  },
+  "lblInterview": {
+    "message": "選考状況"
+  },
+  "lblSource": {
+    "message": "応募経路"
+  },
+  "lblPlatform": {
+    "message": "プラットフォーム"
+  },
+  "lblUrl": {
+    "message": "URL"
+  },
+  "lblNotes": {
+    "message": "メモ"
+  },
+  "btnSave": {
+    "message": "保存"
+  },
+  "btnViewAll": {
+    "message": "すべて表示"
+  },
+  "btnImport": {
+    "message": "CSVインポート"
+  },
+  "btnExport": {
+    "message": "CSVエクスポート"
+  },
+  "btnClearAll": {
+    "message": "すべてクリア"
+  },
+  "btnCancel": {
+    "message": "キャンセル"
+  },
+  "btnConfirm": {
+    "message": "確認"
+  },
+  "btnDelete": {
+    "message": "削除"
+  },
+  "msgAnalyzing": {
+    "message": "解析中..."
+  },
+  "msgSaveSuccess": {
+    "message": "保存しました！"
+  },
+  "msgSaveFailed": {
+    "message": "保存に失敗しました: "
+  },
+  "dashTitle": {
+    "message": "Hai Job - 応募リスト"
+  },
+  "searchPlaceholder": {
+    "message": "会社名、勤務地、職種を検索..."
+  },
+  "optAll": {
+    "message": "すべて"
+  },
+  "intStatusNo": {
+    "message": "面接なし"
+  },
+  "intStatusYes": {
+    "message": "あり"
+  },
+  "intStatusRound1": {
+    "message": "一次面接"
+  },
+  "intStatusRound2": {
+    "message": "二次面接"
+  },
+  "intStatusRound3": {
+    "message": "三次面接"
+  },
+  "intStatusRound4": {
+    "message": "四次面接"
+  },
+  "intStatusFinal": {
+    "message": "最終面接"
+  },
+  "intStatusOffer": {
+    "message": "内定"
+  },
+  "intStatusRejected": {
+    "message": "お見送り"
+  },
+  "srcRecruiter": {
+    "message": "エージェント"
+  },
+  "srcNotApplied": {
+    "message": "未応募"
+  },
+  "srcSelf": {
+    "message": "自己応募"
+  },
+  "srcReferral": {
+    "message": "リファラル"
+  },
+  "emptyState": {
+    "message": "応募記録がありません。"
+  },
+  "delRowConfirm": {
+    "message": "この記録を削除してもよろしいですか？"
+  },
+  "delAllConfirmTitle": {
+    "message": "全件削除の確認"
+  },
+  "delAllConfirmMsg": {
+    "message": "すべての記録を削除しますか？この操作は元に戻せません。"
+  },
+  "csvNoData": {
+    "message": "エクスポートするデータがありません"
+  },
+  "csvFormatErr": {
+    "message": "CSVフォーマットエラーまたは空のファイルです"
+  },
+  "csvNoValid": {
+    "message": "有効なレコードを解析できませんでした。"
+  },
+  "csvPreview": {
+    "message": "解析成功！ {count} 件のデータが含まれています。インポートしますか？"
+  },
+  "csvDuplicateWarn": {
+    "message": "*重複レコード（会社名と職種が完全一致）は無視されます。"
+  },
+  "csvSummary": {
+    "message": "インポート完了！\n成功: {imp} 件\n重複による無視: {dup} 件"
+  },
+  "phCompany": {
+    "message": "例：Morgan Stanley"
+  },
+  "phCity": {
+    "message": "例：Calgary, AB"
+  },
+  "phTitle": {
+    "message": "例：Snr Android App Developer"
+  },
+  "phCustomWorkType": {
+    "message": "カスタムタイプを入力"
+  },
+  "phUrl": {
+    "message": "現在のウェブページから自動抽出"
+  },
+  "phNotes": {
+    "message": "メモを追加..."
+  },
+  "optCustom": {
+    "message": "-- 新しいカテゴリを追加 --"
+  }
+}

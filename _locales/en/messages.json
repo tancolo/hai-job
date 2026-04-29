@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Hai Job - Job Tracker"
+  },
+  "extDesc": {
+    "message": "A Chrome extension for tracking job applications."
+  },
+  "lblDate": {
+    "message": "Date"
+  },
+  "lblCompany": {
+    "message": "Company"
+  },
+  "lblCity": {
+    "message": "City"
+  },
+  "lblTitle": {
+    "message": "Title"
+  },
+  "lblWorkType": {
+    "message": "Work Type"
+  },
+  "lblInterview": {
+    "message": "Interview"
+  },
+  "lblSource": {
+    "message": "Source"
+  },
+  "lblPlatform": {
+    "message": "Platform"
+  },
+  "lblUrl": {
+    "message": "URL"
+  },
+  "lblNotes": {
+    "message": "Notes"
+  },
+  "btnSave": {
+    "message": "Save"
+  },
+  "btnViewAll": {
+    "message": "View All"
+  },
+  "btnImport": {
+    "message": "Import CSV"
+  },
+  "btnExport": {
+    "message": "Export CSV"
+  },
+  "btnClearAll": {
+    "message": "Clear All"
+  },
+  "btnCancel": {
+    "message": "Cancel"
+  },
+  "btnConfirm": {
+    "message": "Confirm"
+  },
+  "btnDelete": {
+    "message": "Delete"
+  },
+  "msgAnalyzing": {
+    "message": "Analyzing webpage..."
+  },
+  "msgSaveSuccess": {
+    "message": "Saved successfully!"
+  },
+  "msgSaveFailed": {
+    "message": "Failed to save: "
+  },
+  "dashTitle": {
+    "message": "Hai Job - Application List"
+  },
+  "searchPlaceholder": {
+    "message": "Search company, city, or title..."
+  },
+  "optAll": {
+    "message": "All"
+  },
+  "intStatusNo": {
+    "message": "No"
+  },
+  "intStatusYes": {
+    "message": "Yes"
+  },
+  "intStatusRound1": {
+    "message": "Round 1"
+  },
+  "intStatusRound2": {
+    "message": "Round 2"
+  },
+  "intStatusRound3": {
+    "message": "Round 3"
+  },
+  "intStatusRound4": {
+    "message": "Round 4"
+  },
+  "intStatusFinal": {
+    "message": "Final Round"
+  },
+  "intStatusOffer": {
+    "message": "Offer"
+  },
+  "intStatusRejected": {
+    "message": "Rejected"
+  },
+  "srcRecruiter": {
+    "message": "Recruiter"
+  },
+  "srcNotApplied": {
+    "message": "Not Applied"
+  },
+  "srcSelf": {
+    "message": "Self Applied"
+  },
+  "srcReferral": {
+    "message": "Referral"
+  },
+  "emptyState": {
+    "message": "No records found. Start tracking some jobs!"
+  },
+  "delRowConfirm": {
+    "message": "Are you sure you want to delete this record?"
+  },
+  "delAllConfirmTitle": {
+    "message": "Clear Records"
+  },
+  "delAllConfirmMsg": {
+    "message": "Are you sure you want to clear all records? This action cannot be undone."
+  },
+  "csvNoData": {
+    "message": "No data to export."
+  },
+  "csvFormatErr": {
+    "message": "CSV format error or file is empty."
+  },
+  "csvNoValid": {
+    "message": "Could not parse any valid records. Please ensure headers are correct."
+  },
+  "csvPreview": {
+    "message": "Successfully parsed! Contains {count} records. Confirm import?"
+  },
+  "csvDuplicateWarn": {
+    "message": "*Duplicates (exact match of Company & Title) will be automatically ignored."
+  },
+  "csvSummary": {
+    "message": "Import complete!\nImported: {imp}\nIgnored duplicates: {dup}"
+  },
+  "phCompany": {
+    "message": "e.g., Morgan Stanley"
+  },
+  "phCity": {
+    "message": "e.g., Calgary, AB"
+  },
+  "phTitle": {
+    "message": "e.g., Snr Android App Developer"
+  },
+  "phCustomWorkType": {
+    "message": "Enter custom type"
+  },
+  "phUrl": {
+    "message": "Auto-extracted from current page"
+  },
+  "phNotes": {
+    "message": "Add notes..."
+  },
+  "optCustom": {
+    "message": "-- Add New Category --"
+  }
+}

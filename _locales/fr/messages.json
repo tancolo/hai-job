@@ -1,0 +1,170 @@
+{
+  "extName": {
+    "message": "Hai Job - Suivi de Candidatures"
+  },
+  "extDesc": {
+    "message": "Une extension pour suivre vos candidatures."
+  },
+  "lblDate": {
+    "message": "Date"
+  },
+  "lblCompany": {
+    "message": "Entreprise"
+  },
+  "lblCity": {
+    "message": "Ville"
+  },
+  "lblTitle": {
+    "message": "Poste"
+  },
+  "lblWorkType": {
+    "message": "Type de travail"
+  },
+  "lblInterview": {
+    "message": "Entretien"
+  },
+  "lblSource": {
+    "message": "Source"
+  },
+  "lblPlatform": {
+    "message": "Plateforme"
+  },
+  "lblUrl": {
+    "message": "URL"
+  },
+  "lblNotes": {
+    "message": "Notes"
+  },
+  "btnSave": {
+    "message": "Enregistrer"
+  },
+  "btnViewAll": {
+    "message": "Voir tout"
+  },
+  "btnImport": {
+    "message": "Importer CSV"
+  },
+  "btnExport": {
+    "message": "Exporter CSV"
+  },
+  "btnClearAll": {
+    "message": "Tout effacer"
+  },
+  "btnCancel": {
+    "message": "Annuler"
+  },
+  "btnConfirm": {
+    "message": "Confirmer"
+  },
+  "btnDelete": {
+    "message": "Supprimer"
+  },
+  "msgAnalyzing": {
+    "message": "Analyse en cours..."
+  },
+  "msgSaveSuccess": {
+    "message": "Enregistré avec succès !"
+  },
+  "msgSaveFailed": {
+    "message": "Échec de l'enregistrement: "
+  },
+  "dashTitle": {
+    "message": "Hai Job - Liste des candidatures"
+  },
+  "searchPlaceholder": {
+    "message": "Rechercher entreprise, ville ou poste..."
+  },
+  "optAll": {
+    "message": "Tous"
+  },
+  "intStatusNo": {
+    "message": "Non"
+  },
+  "intStatusYes": {
+    "message": "Oui"
+  },
+  "intStatusRound1": {
+    "message": "1er tour"
+  },
+  "intStatusRound2": {
+    "message": "2ème tour"
+  },
+  "intStatusRound3": {
+    "message": "3ème tour"
+  },
+  "intStatusRound4": {
+    "message": "4ème tour"
+  },
+  "intStatusFinal": {
+    "message": "Tour final"
+  },
+  "intStatusOffer": {
+    "message": "Offre"
+  },
+  "intStatusRejected": {
+    "message": "Rejeté"
+  },
+  "srcRecruiter": {
+    "message": "Recruteur"
+  },
+  "srcNotApplied": {
+    "message": "Pas encore postulé"
+  },
+  "srcSelf": {
+    "message": "Candidature libre"
+  },
+  "srcReferral": {
+    "message": "Cooptation"
+  },
+  "emptyState": {
+    "message": "Aucun enregistrement trouvé. Commencez à ajouter des candidatures !"
+  },
+  "delRowConfirm": {
+    "message": "Voulez-vous vraiment supprimer cet enregistrement ?"
+  },
+  "delAllConfirmTitle": {
+    "message": "Attention"
+  },
+  "delAllConfirmMsg": {
+    "message": "Voulez-vous vraiment tout effacer ? Cette action est irréversible."
+  },
+  "csvNoData": {
+    "message": "Aucune donnée à exporter."
+  },
+  "csvFormatErr": {
+    "message": "Erreur de format CSV ou fichier vide."
+  },
+  "csvNoValid": {
+    "message": "Impossible d'analyser des enregistrements valides."
+  },
+  "csvPreview": {
+    "message": "Analyse réussie ! Contient {count} enregistrements. Confirmer l'importation ?"
+  },
+  "csvDuplicateWarn": {
+    "message": "*Les doublons (correspondance exacte de l'Entreprise et du Poste) seront ignorés."
+  },
+  "csvSummary": {
+    "message": "Importation terminée !\nImportés : {imp}\nDoublons ignorés : {dup}"
+  },
+  "phCompany": {
+    "message": "ex. Morgan Stanley"
+  },
+  "phCity": {
+    "message": "ex. Calgary, AB"
+  },
+  "phTitle": {
+    "message": "ex. Snr Android App Developer"
+  },
+  "phCustomWorkType": {
+    "message": "Entrez le type personnalisé"
+  },
+  "phUrl": {
+    "message": "Extrait automatiquement"
+  },
+  "phNotes": {
+    "message": "Ajouter des notes..."
+  },
+  "optCustom": {
+    "message": "-- Ajouter une catégorie --"
+  }
+}

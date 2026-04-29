@@ -1,0 +1,9 @@
+# Project Specific Ignores
+node_modules/
+bugs/
+PRD/
+test/chrome_test_profiles/
+
+# Common Ignores
+.DS_Store
+*.log

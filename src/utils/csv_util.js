@@ -3,11 +3,22 @@ const CsvUtil = {
   // Export logic
   exportToCSV: function(jobs) {
     if (jobs.length === 0) {
-      alert('没有数据可导出');
+      alert(chrome.i18n.getMessage("csvNoData"));
       return;
     }
     
-    const headers = ['投递时间', '公司名称', '城市', '职位信息', '工作类型', '面试进度', '职位来源', '投递平台', '职位链接', '备注'];
+    const headers = [
+      chrome.i18n.getMessage("lblDate"),
+      chrome.i18n.getMessage("lblCompany"),
+      chrome.i18n.getMessage("lblCity"),
+      chrome.i18n.getMessage("lblTitle"),
+      chrome.i18n.getMessage("lblWorkType"),
+      chrome.i18n.getMessage("lblInterview"),
+      chrome.i18n.getMessage("lblSource"),
+      chrome.i18n.getMessage("lblPlatform"),
+      chrome.i18n.getMessage("lblUrl"),
+      chrome.i18n.getMessage("lblNotes")
+    ];
     const keys = ['date', 'company', 'location', 'title', 'workType', 'interviewStatus', 'source', 'platform', 'url', 'notes'];
     
     let csvContent = headers.map(h => `"${h}"`).join(',') + '\n';
@@ -84,16 +95,16 @@ const CsvUtil = {
   processParsedCSV: function(rows) {
     return rows.map(row => {
       return {
-        date: row['投递时间'] || row['date'] || '',
-        company: row['公司名称'] || row['投递公司'] || row['company'] || '',
-        location: row['城市'] || row['location'] || '',
-        title: row['职位信息'] || row['职位'] || row['title'] || '',
-        workType: row['工作类型'] || row['workType'] || 'On-site',
-        interviewStatus: row['面试进度'] || row['interviewStatus'] || '否',
-        source: row['职位来源'] || row['source'] || '自投',
-        platform: row['投递平台'] || row['platform'] || 'others',
-        url: row['职位链接'] || row['url'] || 'N/A',
-        notes: row['备注'] || row['notes'] || ''
+        date: row[chrome.i18n.getMessage("lblDate")] || row['投递时间'] || row['Date'] || row['date'] || '',
+        company: row[chrome.i18n.getMessage("lblCompany")] || row['公司名称'] || row['投递公司'] || row['Company'] || row['company'] || '',
+        location: row[chrome.i18n.getMessage("lblCity")] || row['城市'] || row['City'] || row['location'] || '',
+        title: row[chrome.i18n.getMessage("lblTitle")] || row['职位信息'] || row['职位'] || row['Title'] || row['title'] || '',
+        workType: row[chrome.i18n.getMessage("lblWorkType")] || row['工作类型'] || row['Work Type'] || row['workType'] || 'On-site',
+        interviewStatus: row[chrome.i18n.getMessage("lblInterview")] || row['面试进度'] || row['Interview'] || row['interviewStatus'] || '否',
+        source: row[chrome.i18n.getMessage("lblSource")] || row['职位来源'] || row['Source'] || row['source'] || '自投',
+        platform: row[chrome.i18n.getMessage("lblPlatform")] || row['投递平台'] || row['Platform'] || row['platform'] || 'others',
+        url: row[chrome.i18n.getMessage("lblUrl")] || row['职位链接'] || row['URL'] || row['url'] || 'N/A',
+        notes: row[chrome.i18n.getMessage("lblNotes")] || row['备注'] || row['Notes'] || row['notes'] || ''
       };
     }).filter(job => job.company !== '' && job.title !== ''); // Filter out empty lines
   }
