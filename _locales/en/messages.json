@@ -169,5 +169,8 @@
   },
   "lblStatusDate": {
     "message": "Interview update"
+  },
+  "msgDuplicateJob": {
+    "message": "You have already saved this job (same company, city, and title). Duplicate saving is not allowed."
   }
 }

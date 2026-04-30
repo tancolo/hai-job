@@ -169,5 +169,8 @@
   },
   "lblStatusDate": {
     "message": "狀態更新時間"
+  },
+  "msgDuplicateJob": {
+    "message": "您已儲存過該職位（同一公司、城市和職位名稱），無法重複儲存。"
   }
 }

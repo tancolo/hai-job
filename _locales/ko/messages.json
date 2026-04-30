@@ -169,5 +169,8 @@
   },
   "lblStatusDate": {
     "message": "업데이트 날짜"
+  },
+  "msgDuplicateJob": {
+    "message": "이 채용 공고는 이미 저장되었습니다 (동일한 회사, 도시, 직책). 중복 저장은 허용되지 않습니다."
   }
 }

@@ -154,6 +154,18 @@ document.addEventListener('DOMContentLoaded', () => {
     delete jobData.customWorkType;
 
     try {
+      const allJobs = await StorageUtil.getJobs();
+      const isDuplicate = allJobs.some(existingJob => 
+        (existingJob.company || '').trim().toLowerCase() === (jobData.company || '').trim().toLowerCase() && 
+        (existingJob.title || '').trim().toLowerCase() === (jobData.title || '').trim().toLowerCase() &&
+        (existingJob.location || '').trim().toLowerCase() === (jobData.location || '').trim().toLowerCase()
+      );
+
+      if (isDuplicate) {
+        alert(chrome.i18n.getMessage("msgDuplicateJob"));
+        return;
+      }
+
       await StorageUtil.saveJob(jobData);
       showToast(chrome.i18n.getMessage("msgSaveSuccess") || '保存成功！');
       setTimeout(() => {

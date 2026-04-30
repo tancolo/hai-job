@@ -169,5 +169,8 @@
   },
   "lblStatusDate": {
     "message": "Date de mise à jour"
+  },
+  "msgDuplicateJob": {
+    "message": "Vous avez déjà enregistré cette offre (même entreprise, ville et titre). Les doublons ne sont pas autorisés."
   }
 }

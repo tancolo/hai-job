@@ -169,5 +169,8 @@
   },
   "lblStatusDate": {
     "message": "更新日"
+  },
+  "msgDuplicateJob": {
+    "message": "この求人はすでに保存されています（同じ会社、都市、役職名）。重複保存はできません。"
   }
 }
