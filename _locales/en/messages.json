@@ -166,5 +166,8 @@
   },
   "optCustom": {
     "message": "-- Add New Category --"
+  },
+  "lblStatusDate": {
+    "message": "Interview update"
   }
 }

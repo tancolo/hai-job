@@ -14,18 +14,20 @@ const CsvUtil = {
       chrome.i18n.getMessage("lblTitle"),
       chrome.i18n.getMessage("lblWorkType"),
       chrome.i18n.getMessage("lblInterview"),
+      chrome.i18n.getMessage("lblStatusDate"),
       chrome.i18n.getMessage("lblSource"),
       chrome.i18n.getMessage("lblPlatform"),
       chrome.i18n.getMessage("lblUrl"),
       chrome.i18n.getMessage("lblNotes")
     ];
-    const keys = ['date', 'company', 'location', 'title', 'workType', 'interviewStatus', 'source', 'platform', 'url', 'notes'];
+    const keys = ['date', 'company', 'location', 'title', 'workType', 'interviewStatus', 'statusDate', 'source', 'platform', 'url', 'notes'];
     
     let csvContent = headers.map(h => `"${h}"`).join(',') + '\n';
     
     jobs.forEach(job => {
+      const rowData = { ...job, statusDate: job.statusDate || job.date || '' };
       const row = keys.map(key => {
-        let val = job[key] || '';
+        let val = rowData[key] || '';
         val = val.toString().replace(/"/g, '""'); // Escape inner quotes
         return `"${val}"`;
       });
@@ -101,6 +103,7 @@ const CsvUtil = {
         title: row[chrome.i18n.getMessage("lblTitle")] || row['职位信息'] || row['职位'] || row['Title'] || row['title'] || '',
         workType: row[chrome.i18n.getMessage("lblWorkType")] || row['工作类型'] || row['Work Type'] || row['workType'] || 'On-site',
         interviewStatus: row[chrome.i18n.getMessage("lblInterview")] || row['面试进度'] || row['Interview'] || row['interviewStatus'] || '否',
+        statusDate: row[chrome.i18n.getMessage("lblStatusDate")] || row['状态更新时间'] || row['Interview update'] || row['statusDate'] || '',
         source: row[chrome.i18n.getMessage("lblSource")] || row['职位来源'] || row['Source'] || row['source'] || '自投',
         platform: row[chrome.i18n.getMessage("lblPlatform")] || row['投递平台'] || row['Platform'] || row['platform'] || 'others',
         url: row[chrome.i18n.getMessage("lblUrl")] || row['职位链接'] || row['URL'] || row['url'] || 'N/A',

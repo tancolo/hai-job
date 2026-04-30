@@ -166,5 +166,8 @@
   },
   "optCustom": {
     "message": "-- 새 범주 추가 --"
+  },
+  "lblStatusDate": {
+    "message": "업데이트 날짜"
   }
 }

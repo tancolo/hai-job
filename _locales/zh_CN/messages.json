@@ -166,5 +166,8 @@
   },
   "optCustom": {
     "message": "-- 添加新类别 --"
+  },
+  "lblStatusDate": {
+    "message": "状态更新时间"
   }
 }

@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
       selectHtml += `</select>`;
 
       const displaySource = srcMap[job.source] || job.source;
+      const displayStatusDate = (job.interviewStatus !== '否' && job.statusDate) ? job.statusDate : job.date;
 
       tr.innerHTML = `
         <td>${escapeHtml(job.date || '')}</td>
@@ -118,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${escapeHtml(job.title || '')}</td>
         <td>${escapeHtml(job.workType || '')}</td>
         <td>${selectHtml}</td>
+        <td>${escapeHtml(displayStatusDate || '')}</td>
         <td>${escapeHtml(displaySource)}</td>
         <td>${escapeHtml(job.platform || '')}</td>
         <td>${linkHtml}</td>
@@ -137,12 +139,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = e.target.getAttribute('data-id');
         const newStatus = e.target.value;
         try {
-           await StorageUtil.updateJob(id, { interviewStatus: newStatus });
+           const updatePayload = { interviewStatus: newStatus };
+           if (newStatus !== '否') {
+             updatePayload.statusDate = new Date().toISOString().split('T')[0];
+           }
+           await StorageUtil.updateJob(id, updatePayload);
            
            // Update memory cache so filters keep working accurately
            const jobIndex = allJobs.findIndex(j => j.id === id);
            if(jobIndex > -1) {
              allJobs[jobIndex].interviewStatus = newStatus;
+             if (newStatus !== '否') {
+               allJobs[jobIndex].statusDate = updatePayload.statusDate;
+             }
+             
+             // Update the specific statusDate cell visually without full re-render
+             const tr = e.target.closest('tr');
+             if (tr && tr.cells[6]) {
+               const newDisplayDate = (newStatus !== '否' && updatePayload.statusDate) ? updatePayload.statusDate : allJobs[jobIndex].date;
+               tr.cells[6].textContent = newDisplayDate || '';
+             }
            }
 
            // Create visual feedback

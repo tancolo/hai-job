@@ -166,5 +166,8 @@
   },
   "optCustom": {
     "message": "-- Ajouter une catégorie --"
+  },
+  "lblStatusDate": {
+    "message": "Date de mise à jour"
   }
 }

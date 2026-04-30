@@ -166,5 +166,8 @@
   },
   "optCustom": {
     "message": "-- 添加新類別 --"
+  },
+  "lblStatusDate": {
+    "message": "狀態更新時間"
   }
 }

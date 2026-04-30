@@ -166,5 +166,8 @@
   },
   "optCustom": {
     "message": "-- 新しいカテゴリを追加 --"
+  },
+  "lblStatusDate": {
+    "message": "更新日"
   }
 }
