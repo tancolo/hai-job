@@ -10,6 +10,9 @@ Hai Job 是一款专为求职者打造的智能、隐私优先的 Chrome 浏览�
 
 通过对主流招聘网站的原生数据抓取支持，以及内置的 6 大语言全方位国际化 (i18n) 适配，Hai Job 将成为你求职路上的个人专属 CRM。
 
+### 🎥 Demo
+![Hai Job Demo](../assets/hai_job_demo.gif)
+
 ## 🌟 核心功能
 
 - **一键智能抓取**：自动从 LinkedIn, Indeed 以及 Jobbank 等主流招聘网站的职位详情页中提取：公司名称、城市、职位信息、工作类型（Remote/Hybrid等）以及当前链接。

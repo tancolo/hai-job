@@ -10,6 +10,9 @@ Hai Job Tracker is an intelligent, privacy-first Chrome extension designed to he
 
 With native support for automatic data extraction from popular job boards and a fully localized interface in 6 languages, Hai Job acts as your personal offline CRM for job hunting.
 
+### 🎥 Demo
+![Hai Job Demo](../assets/hai_job_demo.gif)
+
 ## 🌟 Key Features
 
 - **One-Click Scraping**: Automatically extracts Company Name, City, Job Title, Work Type, and URL directly from popular job boards including LinkedIn, Indeed, and Jobbank.
