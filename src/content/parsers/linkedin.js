@@ -1,13 +1,10 @@
 /**
  * Parses LinkedIn job postings.
  *
- * LinkedIn frequently changes its DOM class names. To stay resilient, this
- * parser uses a multi-layer defensive strategy for each field:
- *
- * Layer 1: The exact class names confirmed via Chrome Inspector (most reliable)
- * Layer 2: Partial class name matching via querySelectorAll + Array.find()
- * Layer 3: Semantic tag fallbacks (h1, a[href*="company"])
- * Layer 4: Text-pattern regex scanning across the whole page header area
+ * Supports three views:
+ *   1. Logged-in SPA collections (/jobs/collections/): split layout, scope to right panel
+ *   2. Logged-in direct view (/jobs/view/): hashed CSS classes — use data attributes + exclusion
+ *   3. Guest / not logged-in: topcard__ classes
  */
 if (!window.HaiJobParsers) {
   window.HaiJobParsers = {};
@@ -23,138 +20,224 @@ window.HaiJobParsers.linkedin = function() {
     workType: ''
   };
 
-  // Helper: find the first element whose className contains ALL of the given fragments
-  function findByPartialClass(fragments, root = document) {
-    const all = root.querySelectorAll('*');
-    for (let el of all) {
-      const cls = el.className && typeof el.className === 'string' ? el.className : '';
-      if (fragments.every(f => cls.includes(f))) {
-        const txt = (el.innerText || '').trim();
-        if (txt) return el;
-      }
-    }
-    return null;
+  // Work type keywords to exclude from location detection
+  const WORK_TYPE_WORDS = ['remote', 'hybrid', 'on-site', 'onsite', 'full-time',
+                           'part-time', 'contract', 'internship', 'temporary', 'volunteer'];
+
+  // Validate a candidate title string — reject upsell/navigation/premium content
+  function isValidJobTitle(txt) {
+    if (!txt || txt.length < 3 || txt.length > 150) return false;
+    if (/premium|ca\$|\$0|upsell|subscribe/i.test(txt)) return false;
+    if (/^(use ai|get ai|show match|tailor|help you|about the job|job search|looking for)/i.test(txt)) return false;
+    if (/^(home|jobs|network|messaging|notifications?)/i.test(txt)) return false;
+    return true;
+  }
+
+  // Helper: reject strings that are obviously NOT locations
+  function isLocationText(txt) {
+    if (!txt || txt.length < 2 || txt.length > 80) return false;
+    if (/\d{4}/.test(txt)) return false;
+    if (/ago|apply|applicant|repost|promot|response|manag/i.test(txt)) return false;
+    if (WORK_TYPE_WORDS.some(w => txt.toLowerCase() === w)) return false;
+    return true;
   }
 
   try {
-    // ─── 1. JOB TITLE ─────────────────────────────────────────────────────────
-    // Layer 1: Exact confirmed class (div, not h1!) from Chrome Inspector
-    //   → div.t-24.job-details-jobs-unified-top-card__job-title
-    // Layer 2: Partial match on "job-details-jobs-unified-top-card__job-title"
-    // Layer 3: Older SPA class names
-    // Layer 4: topcard__ (guest/direct URL view)
-    // Layer 5: Any h1 on the page
-    const titleEl =
-      document.querySelector('div.job-details-jobs-unified-top-card__job-title') ||
-      document.querySelector('.job-details-jobs-unified-top-card__job-title') ||
-      document.querySelector('.jobs-unified-top-card__job-title h1') ||
-      document.querySelector('.jobs-unified-top-card__job-title a') ||
-      document.querySelector('.jobs-unified-top-card__job-title') ||
-      document.querySelector('h1.topcard__title') ||
-      document.querySelector('h1.t-24.t-bold') ||
-      findByPartialClass(['job-details', 'top-card', 'job-title']) ||
-      document.querySelector('h1');
-
-    if (titleEl) data.title = titleEl.innerText.trim();
-
-    // ─── 2. COMPANY NAME ──────────────────────────────────────────────────────
-    // Layer 1: Exact confirmed class from Chrome Inspector
-    //   → div.job-details-jobs-unified-top-card__company-name
-    // Layer 2: With inner <a> child (some LinkedIn UI variants wrap it in a link)
-    // Layer 3: Older SPA class names
-    // Layer 4: topcard__ (guest/direct URL view)
-    const companyEl =
-      document.querySelector('div.job-details-jobs-unified-top-card__company-name') ||
-      document.querySelector('.job-details-jobs-unified-top-card__company-name a') ||
-      document.querySelector('.job-details-jobs-unified-top-card__company-name') ||
-      document.querySelector('.jobs-unified-top-card__company-name a') ||
-      document.querySelector('.jobs-unified-top-card__company-name') ||
-      document.querySelector('a.topcard__org-name-link') ||
-      document.querySelector('.topcard__flavor a') ||
-      findByPartialClass(['job-details', 'company-name']);
-
-    if (companyEl) data.company = companyEl.innerText.trim();
-
-    // ─── 3. LOCATION ──────────────────────────────────────────────────────────
-    // Layer 1 (confirmed): span.tvm__text.tvm__text--low-emphasis
-    //   The first span that isn't "X hours ago" or "Apply" is the city
-    const locationSpans = document.querySelectorAll('span.tvm__text.tvm__text--low-emphasis');
-    for (let span of locationSpans) {
-      let txt = (span.innerText || '').trim();
-      if (txt && !txt.toLowerCase().includes('ago') && !txt.toLowerCase().includes('apply')) {
-        data.location = txt.replace(/\s*\(.*?\)\s*/g, '').trim();
-        break;
-      }
-    }
-
-    // Layer 2: Logged-in SPA bullet span
-    if (!data.location) {
-      const bulletEl =
-        document.querySelector('.job-details-jobs-unified-top-card__bullet') ||
-        document.querySelector('.jobs-unified-top-card__bullet') ||
-        document.querySelector('.jobs-unified-top-card__location');
-      if (bulletEl) {
-        data.location = bulletEl.innerText.trim().replace(/\s*\(.*?\)\s*/g, '').trim();
-      }
-    }
-
-    // Layer 3: Guest / direct URL view — topcard flavor bullet
-    if (!data.location) {
-      for (let span of document.querySelectorAll('span.topcard__flavor--bullet')) {
-        let txt = (span.innerText || '').trim();
-        if (txt && !txt.toLowerCase().includes('ago')) {
-          data.location = txt.replace(/\s*\(.*?\)\s*/g, '').trim();
-          break;
-        }
-      }
-    }
-
-    // Layer 4: Ultra-aggressive — regex scan for "City, Province" pattern
-    if (!data.location) {
-      const scanRoot =
-        document.querySelector('.job-details-jobs-unified-top-card') ||
-        document.querySelector('.jobs-unified-top-card') ||
-        document.querySelector('.jobs-search__job-details--container') ||
-        document.querySelector('.top-card-layout') ||
-        document.body;
-      for (let el of scanRoot.querySelectorAll('li, span, div')) {
-        let txt = (el.innerText || '').trim();
-        // Match "Calgary, AB" / "Greater Toronto Area, Ontario" / "Toronto, ON"
-        let match = txt.match(/^[A-Z][a-zA-Z\-\s]+,\s*[A-Z][a-zA-Z\s]+/);
-        if (match && txt.length < 80) {
-          data.location = match[0];
-          break;
-        }
-      }
-    }
-
-    // ─── 4. WORK TYPE ─────────────────────────────────────────────────────────
-    // Scan the job header area for short pill-style tags like "Remote", "Hybrid", "On-site"
-    // We limit to <=25 chars to avoid matching full sentences in the job description body.
-    const workTypeRoot =
+    // ── STEP 0: Find main job detail panel (works for split-layout pages) ────
+    const mainPanel =
+      document.querySelector('.job-details-jobs-unified-top-card__container') ||
+      document.querySelector('.jobs-search__job-details--container') ||
+      document.querySelector('.jobs-details__main-content') ||
+      document.querySelector('.scaffold-layout__detail') ||
+      document.querySelector('.job-view-layout') ||
       document.querySelector('.job-details-jobs-unified-top-card') ||
       document.querySelector('.jobs-unified-top-card') ||
-      document.querySelector('.jobs-search__job-details--container') ||
       document.querySelector('.top-card-layout') ||
-      document.body;
+      document.querySelector('.topcard');
 
-    if (workTypeRoot) {
-      for (let el of workTypeRoot.querySelectorAll('span, div, li, a')) {
-        let txt = (el.innerText || '').trim().toLowerCase();
-        if (txt.length > 0 && txt.length <= 25) {
-          if (txt.includes('on-site') || txt.includes('onsite')) {
-            data.workType = 'On-site'; break;
-          } else if (txt.includes('hybrid')) {
-            data.workType = 'Hybrid'; break;
-          } else if (txt.includes('remote')) {
-            data.workType = 'Remote'; break;
+    const scope = mainPanel || document;
+
+    // ── 1. JOB TITLE ─────────────────────────────────────────────────────────
+
+    // Layer 1: Semantic class names (works for /jobs/collections/ split view)
+    let titleEl =
+      scope.querySelector('div.job-details-jobs-unified-top-card__job-title') ||
+      scope.querySelector('.job-details-jobs-unified-top-card__job-title') ||
+      scope.querySelector('.jobs-unified-top-card__job-title h1') ||
+      scope.querySelector('.jobs-unified-top-card__job-title') ||
+      scope.querySelector('h1.topcard__title') ||
+      scope.querySelector('h1.top-card-layout__title') ||
+      scope.querySelector('h1.t-24.t-bold');
+
+    // Layer 2: Parse page <title> tag — stable SEO metadata, unaffected by CSS changes.
+    // LinkedIn format: "Job Title | LinkedIn" or "Job Title hiring now | LinkedIn"
+    // Used primarily for /jobs/view/ direct URLs (logged-in, hashed-class layout).
+    if (!titleEl && /\/jobs\/view\//i.test(window.location.pathname)) {
+      const rawPageTitle = document.title || '';
+      if (rawPageTitle) {
+        // Strip everything after the first " | " separator (" | LinkedIn" suffix)
+        const candidate = rawPageTitle.split(' | ')[0]
+          .replace(/\s+hiring now\s*$/i, '')
+          .replace(/\s+at\s+.+$/, '')  // strip " at CompanyName" if present
+          .trim();
+        if (isValidJobTitle(candidate) && candidate !== data.company) {
+          data.title = candidate;
+        }
+      }
+    }
+
+    // Layer 3: data-display-contents — secondary fallback for /jobs/view/ hashed layout.
+    // Guards: skip elements with componentkey (premium/upsell) and skip company name.
+    if (!data.title) {
+      const displayDivs = Array.from(
+        document.querySelectorAll('[data-display-contents="true"]')
+      );
+      for (let div of displayDivs) {
+        const p = div.querySelector('p:not([componentkey])');
+        if (!p) continue;
+        const firstTextNode = Array.from(p.childNodes)
+          .find(n => n.nodeType === 3 && n.textContent.trim());
+        const candidate = firstTextNode
+          ? firstTextNode.textContent.trim()
+          : (p.innerText || '').trim().split('\n')[0].trim();
+        // Exclude company name and invalid titles
+        if (isValidJobTitle(candidate) && candidate !== data.company) {
+          data.title = candidate;
+          break;
+        }
+      }
+    }
+
+    // Layer 4: h1/h2 fallback — skip LinkedIn nav & premium elements
+    if (!data.title) {
+      const headings = Array.from(scope.querySelectorAll('h1, h2'));
+      const titleEl4 = headings.find(h => {
+        const txt = (h.innerText || '').trim();
+        return isValidJobTitle(txt) &&
+               txt !== data.company &&
+               !h.closest('nav') &&
+               !h.closest('header');
+      }) || null;
+      if (titleEl4) {
+        data.title = (titleEl4.innerText || '').trim().split('\n')[0].trim();
+      }
+    }
+
+    // Layer 1 result: set data.title from class-based titleEl if not yet set
+    if (!data.title && titleEl) {
+      const firstTextNode = Array.from(titleEl.childNodes)
+        .find(n => n.nodeType === 3 && n.textContent.trim());
+      data.title = firstTextNode
+        ? firstTextNode.textContent.trim()
+        : (titleEl.innerText || '').trim().split('\n')[0].trim();
+    }
+
+    // ── 2. COMPANY NAME ──────────────────────────────────────────────────────
+    const companyEl =
+      scope.querySelector('div.job-details-jobs-unified-top-card__company-name') ||
+      scope.querySelector('.job-details-jobs-unified-top-card__company-name a') ||
+      scope.querySelector('.job-details-jobs-unified-top-card__company-name') ||
+      scope.querySelector('.jobs-unified-top-card__company-name a') ||
+      scope.querySelector('.jobs-unified-top-card__company-name') ||
+      scope.querySelector('a.topcard__org-name-link') ||
+      scope.querySelector('.topcard__flavor a') ||
+      scope.querySelector('a[href*="/company/"]');     // Semantic: always stable
+
+    if (companyEl) {
+      data.company = (companyEl.innerText || '').trim().split('\n')[0].trim();
+    }
+
+    // ── 3. LOCATION ──────────────────────────────────────────────────────────
+
+    // Method A: tvm__text spans (collections split view — confirmed by inspector)
+    // Split on "·" to handle "Canada · Reposted 1 week ago" → take "Canada"
+    for (let span of scope.querySelectorAll('span.tvm__text, span.tvm__text--low-emphasis')) {
+      const parts = (span.innerText || '').split('·').map(p => p.trim());
+      const loc = parts.find(p => isLocationText(p));
+      if (loc) { data.location = loc.replace(/\s*\(.*?\)\s*/g, '').trim(); break; }
+    }
+
+    // Method B: Semantic bullet classes (split view)
+    if (!data.location) {
+      const bulletEl =
+        scope.querySelector('.job-details-jobs-unified-top-card__bullet') ||
+        scope.querySelector('.job-details-jobs-unified-top-card__tertiary-description-container span') ||
+        scope.querySelector('.jobs-unified-top-card__bullet') ||
+        scope.querySelector('.jobs-unified-top-card__location');
+      if (bulletEl) {
+        const parts = (bulletEl.innerText || '').split('·').map(p => p.trim());
+        const loc = parts.find(p => isLocationText(p));
+        if (loc) data.location = loc.replace(/\s*\(.*?\)\s*/g, '').trim();
+      }
+    }
+
+    // Method C: Guest topcard
+    if (!data.location) {
+      for (let span of scope.querySelectorAll('span.topcard__flavor--bullet')) {
+        const txt = (span.innerText || '').trim();
+        if (isLocationText(txt)) {
+          data.location = txt.replace(/\s*\(.*?\)\s*/g, '').trim(); break;
+        }
+      }
+    }
+
+    // Method D: /jobs/view/ logged-in with hashed classes.
+    // Inspector confirmed: location is in a <span> with a short single-word class.
+    // Use the title container sibling approach: find <p> elements near data-display-contents.
+    if (!data.location) {
+      const titleContainer = document.querySelector('[data-display-contents="true"]');
+      if (titleContainer) {
+        const parent = titleContainer.parentElement;
+        if (parent) {
+          // Sibling <p> elements after the title div contain location
+          const siblingPs = parent.querySelectorAll('p');
+          for (let p of siblingPs) {
+            // Skip the title p itself
+            if (p === titleEl) continue;
+            // First <span> child is typically the location text
+            const firstSpan = p.querySelector('span');
+            if (firstSpan) {
+              const txt = (firstSpan.innerText || '').trim();
+              if (isLocationText(txt)) {
+                data.location = txt.replace(/\s*\(.*?\)\s*/g, '').trim();
+                break;
+              }
+            }
           }
         }
       }
     }
 
+    // Method E: Last resort — scan all spans on page for geographic text.
+    // Strict: must match "City, XX" or a capitalised word/phrase, not a work type.
+    if (!data.location) {
+      for (let span of document.querySelectorAll('span')) {
+        if (span.closest('nav') || span.closest('header')) continue;
+        const txt = (span.innerText || '').trim();
+        if (!isLocationText(txt)) continue;
+        // "City, Province" with 2-3 uppercase letter code
+        if (/^[A-Z][a-zA-Z\s\-]+,\s*[A-Z]{2,3}$/.test(txt)) {
+          data.location = txt; break;
+        }
+        // Country or metro area (1-3 capitalised words, no numbers)
+        if (/^[A-Z][a-zA-Z]+(\s[A-Z][a-zA-Z]+){0,2}$/.test(txt) && txt.length <= 40) {
+          data.location = txt; break;
+        }
+      }
+    }
+
+    // ── 4. WORK TYPE ─────────────────────────────────────────────────────────
+    // Scan within scope; use exact match on short pill-style elements only.
+    const wtRoot = mainPanel || document;
+    for (let el of wtRoot.querySelectorAll('span, li')) {
+      const txt = (el.innerText || '').trim().toLowerCase();
+      if (txt === 'on-site' || txt === 'onsite') { data.workType = 'On-site'; break; }
+      else if (txt === 'hybrid')                  { data.workType = 'Hybrid';  break; }
+      else if (txt === 'remote')                  { data.workType = 'Remote';  break; }
+    }
+
   } catch (err) {
-    console.error("Error parsing LinkedIn job:", err);
+    console.error('Error parsing LinkedIn job:', err);
   }
 
   return data;
