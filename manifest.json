@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extName__",
-  "version": "1.2",
+  "version": "1.0.0",
   "description": "__MSG_extDesc__",
   "default_locale": "en",
   "icons": {
@@ -17,7 +17,10 @@
     "scripting"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "https://*.linkedin.com/*",
+    "https://*.indeed.com/*",
+    "https://*.ca.indeed.com/*",
+    "https://www.jobbank.gc.ca/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -37,7 +40,12 @@
   "web_accessible_resources": [
     {
       "resources": ["src/content/parsers/*.js"],
-      "matches": ["<all_urls>"]
+      "matches": [
+        "https://*.linkedin.com/*",
+        "https://*.indeed.com/*",
+        "https://*.ca.indeed.com/*",
+        "https://www.jobbank.gc.ca/*"
+      ]
     }
   ]
 }
