@@ -4,6 +4,9 @@ bugs/
 PRD/
 test/chrome_test_profiles/
 
+# Build Artifacts
+dist/
+
 # Common Ignores
 .DS_Store
 *.log
