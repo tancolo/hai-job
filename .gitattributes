@@ -1,0 +1,11 @@
+# Handle line endings automatically for files detected as text 
+# and leave binary files untouched.
+* text=auto
+
+# Ensure specific file types always use LF on commit
+*.js text
+*.html text
+*.css text
+*.json text
+*.md text
+*.ps1 text eol=crlf

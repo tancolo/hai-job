@@ -172,5 +172,11 @@
   },
   "msgDuplicateJob": {
     "message": "Vous avez déjà enregistré cette offre (même entreprise, ville et titre). Les doublons ne sont pas autorisés."
+  },
+  "unsupportedSiteTitle": {
+    "message": "Extraction automatique non disponible"
+  },
+  "unsupportedSiteMsg": {
+    "message": "Ce site n'est pas encore pris en charge pour l'extraction automatique. Sites actuellement pris en charge: LinkedIn, Indeed, Job Bank. Vous pouvez remplir le formulaire manuellement. Pour demander la prise en charge, ecrivez-nous:"
   }
 }

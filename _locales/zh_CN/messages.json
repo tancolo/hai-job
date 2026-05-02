@@ -172,5 +172,11 @@
   },
   "msgDuplicateJob": {
     "message": "您已保存过该职位（同一公司、城市和职位名称），无法重复保存。"
+  },
+  "unsupportedSiteTitle": {
+    "message": "暂不支持自动抓取"
+  },
+  "unsupportedSiteMsg": {
+    "message": "当前网站暂不支持自动提取职位信息。目前已支持：LinkedIn、Indeed、Job Bank。你仍可手动填写表单并保存投递记录。希望支持该网站？欢迎发邮件告诉我们："
   }
 }

@@ -172,5 +172,11 @@
   },
   "msgDuplicateJob": {
     "message": "この求人はすでに保存されています（同じ会社、都市、役職名）。重複保存はできません。"
+  },
+  "unsupportedSiteTitle": {
+    "message": "自動抽出は利用できません"
+  },
+  "unsupportedSiteMsg": {
+    "message": "このウェブサイトはまだ求人情報の自動抽出に対応していません。現在対応中のサイト：LinkedIn、Indeed、Job Bank。フォームに手動で入力して保存することは可能です。このサイトのサポートをご希望ですか？メールでお知らせください："
   }
 }

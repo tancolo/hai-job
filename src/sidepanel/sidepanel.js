@@ -6,7 +6,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnViewAll = document.getElementById('btn-view-all');
   const btnSave = document.getElementById('btn-save');
   const toast = document.getElementById('toast');
+  const unsupportedBanner = document.getElementById('unsupported-banner');
+  const unsupportedMsg = document.getElementById('unsupported-msg');
+  const unsupportedClose = document.getElementById('unsupported-close');
   let loadingTimeout;
+
+  // Supported job site hostnames (must match manifest.json host_permissions)
+  const SUPPORTED_HOSTS = [
+    'linkedin.com',
+    'indeed.com',
+    'jobbank.gc.ca'
+  ];
+
+  function isSupportedSite(hostname) {
+    return SUPPORTED_HOSTS.some(host => hostname.includes(host));
+  }
+
+  function showUnsupportedBanner() {
+    const fullMsg = chrome.i18n.getMessage('unsupportedSiteMsg') || '';
+    // Strip the email from the message text (rendered as a separate clickable link)
+    const msgText = fullMsg.replace(/support@getridepilot\.com/g, '').replace(/[:：]\s*$/, '.').trim();
+    // Bold the three supported platform names wherever they appear
+    const boldedMsg = msgText
+      .replace(/LinkedIn/g, '<strong>LinkedIn</strong>')
+      .replace(/Indeed/g, '<strong>Indeed</strong>')
+      .replace(/Job Bank/g, '<strong>Job Bank</strong>');
+    unsupportedMsg.innerHTML = boldedMsg;
+    unsupportedBanner.classList.remove('hidden');
+  }
+
+  // Close button dismisses the banner for this session
+  unsupportedClose.addEventListener('click', () => {
+    unsupportedBanner.classList.add('hidden');
+  });
 
   // Set today's date as default
   const today = new Date().toISOString().split('T')[0];
@@ -30,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingOverlay.classList.remove('hidden');
         btnSave.disabled = true;
         btnSave.textContent = chrome.i18n.getMessage("msgAnalyzing") || '处理中...';
-        
+
         loadingTimeout = setTimeout(() => {
           hideLoading();
           console.warn("Scraping timed out or page not supported.");
@@ -38,7 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
           const tab = tabs[0];
-          const urlObj = new URL(tab.url);
+          const tabUrl = tab.url || '';
+
+          // Step 1: Only http/https pages can be scraped.
+          // chrome://, about:, file:// etc. are not job sites.
+          if (!tabUrl.startsWith('http://') && !tabUrl.startsWith('https://')) {
+            hideLoading();
+            showUnsupportedBanner();
+            return;
+          }
+
+          const urlObj = new URL(tabUrl);
           const hostname = urlObj.hostname;
 
           let parserFile = null;
@@ -60,6 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
               target: { tabId: tab.id },
               files: [parserFile]
             });
+          } else {
+            // Recognized http site but no parser available — show unsupported banner
+            hideLoading();
+            showUnsupportedBanner();
+            return;
           }
 
           const results = await chrome.scripting.executeScript({

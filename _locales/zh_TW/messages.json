@@ -172,5 +172,11 @@
   },
   "msgDuplicateJob": {
     "message": "您已儲存過該職位（同一公司、城市和職位名稱），無法重複儲存。"
+  },
+  "unsupportedSiteTitle": {
+    "message": "暫不支援自動擷取"
+  },
+  "unsupportedSiteMsg": {
+    "message": "目前網站暫不支援自動擷取職位資訊。目前已支援：LinkedIn、Indeed、Job Bank。您仍可手動填寫表單並儲存應徵記錄。希望支援此網站？歡迎來信告知："
   }
 }

@@ -20,6 +20,17 @@
       <p data-i18n="msgAnalyzing">正在分析网页中...</p>
     </div>
 
+    <!-- Unsupported site notice banner (hidden by default) -->
+    <div id="unsupported-banner" class="unsupported-banner hidden">
+      <div class="unsupported-icon">⚠️</div>
+      <div class="unsupported-content">
+        <strong id="unsupported-title" data-i18n="unsupportedSiteTitle">Auto-extraction not available</strong>
+        <p id="unsupported-msg"></p>
+        <a id="unsupported-email" href="mailto:support@getridepilot.com" class="feedback-link">support@getridepilot.com</a>
+      </div>
+      <button id="unsupported-close" class="banner-close" aria-label="Close">✕</button>
+    </div>
+
     <form id="job-form">
       <div class="form-group">
         <label for="date" data-i18n="lblDate">投递时间</label>

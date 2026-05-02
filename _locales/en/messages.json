@@ -172,5 +172,11 @@
   },
   "msgDuplicateJob": {
     "message": "You have already saved this job (same company, city, and title). Duplicate saving is not allowed."
+  },
+  "unsupportedSiteTitle": {
+    "message": "Auto-extraction not available"
+  },
+  "unsupportedSiteMsg": {
+    "message": "This website is not yet supported for automatic job info extraction. Currently supported: LinkedIn, Indeed, Job Bank. You can still fill in the form manually and save your application. Want this site supported? Email us:"
   }
 }
