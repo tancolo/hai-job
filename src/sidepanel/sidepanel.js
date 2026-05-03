@@ -189,6 +189,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Open Dashboard — reuse existing tab if already open, otherwise create a new one.
+  // Uses background.js to track the dashboard tab ID — avoids needing "tabs" permission.
+  function openDashboard() {
+    const dashboardUrl = chrome.runtime.getURL('src/dashboard/dashboard.html');
+    chrome.runtime.sendMessage({ action: 'get_dashboard_tab' }, (resp) => {
+      const tabId = resp && resp.tabId;
+      if (tabId) {
+        // Try to focus the existing tab; if it fails (tab was closed), open a new one
+        chrome.tabs.update(tabId, { active: true }, (tab) => {
+          if (chrome.runtime.lastError || !tab) {
+            chrome.tabs.create({ url: dashboardUrl });
+          } else {
+            chrome.windows.update(tab.windowId, { focused: true });
+          }
+        });
+      } else {
+        chrome.tabs.create({ url: dashboardUrl });
+      }
+    });
+  }
+
   // Handle Form Submission
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -216,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
       await StorageUtil.saveJob(jobData);
       showToast(chrome.i18n.getMessage("msgSaveSuccess") || '保存成功！');
       setTimeout(() => {
-        chrome.tabs.create({ url: 'src/dashboard/dashboard.html' });
+        openDashboard();
         window.close();
       }, 1500);
     } catch (err) {
@@ -227,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle View All Button
   btnViewAll.addEventListener('click', () => {
-    chrome.tabs.create({ url: 'src/dashboard/dashboard.html' });
+    openDashboard();
     window.close();
   });
 

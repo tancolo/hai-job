@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Register this tab's ID with the background so sidepanel can reuse it
+  chrome.tabs.getCurrent((tab) => {
+    if (tab) {
+      chrome.runtime.sendMessage({ action: 'register_dashboard', tabId: tab.id });
+    }
+  });
+
   const tbody = document.getElementById('jobs-tbody');
   const table = document.getElementById('jobs-table');
   const emptyState = document.getElementById('empty-state');
