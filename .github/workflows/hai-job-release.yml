@@ -1,0 +1,57 @@
+name: Hai Job Release
+
+on:
+  push:
+    tags:
+      - 'hai-job-v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Run Build Script
+        shell: pwsh
+        working-directory: ./hai_job
+        run: ./build_extension.ps1
+      
+      - name: Extract Version from Tag
+        id: extract_version
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG_NAME#hai-job-v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Hai Job Tracker v${{ env.VERSION }}"
+          draft: false
+          prerelease: false
+          make_latest: true
+          files: hai_job/dist/hai_job_v${{ env.VERSION }}.zip
+          body: |
+            ## 🎉 Hai Job Tracker — Release v${{ env.VERSION }}
+
+            A privacy-first Chrome extension for job seekers to effortlessly capture, track, and manage job applications directly from your browser.
+
+            ### ✨ Core Features
+
+            - **One-Click Scraping**: Auto-extracts job title, company, location, and work type from LinkedIn, Indeed, and Canada's Job Bank.
+            - **Side Panel UI**: Review and save applications without leaving the current tab.
+            - **Dashboard**: Full-featured management view with fuzzy search and multi-criteria filtering (Work Type, Interview Status, Platform).
+            - **Inline Status Editing**: Update interview progress directly in the table; status change date is recorded automatically.
+            - **CSV Export / Import**: Backup and restore all records locally with smart duplicate detection.
+            - **6-Language i18n**: English, Simplified Chinese, Traditional Chinese, Japanese, Korean, French — auto-detected from browser settings.
+            - **Privacy-First**: 100% offline. All data stored in `chrome.storage.local`. No external servers. No tracking.
+
+            ### 📦 Installation
+
+            Download `hai_job_v${{ env.VERSION }}.zip`, unzip it, then load it via `chrome://extensions` → Developer Mode → Load Unpacked.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
