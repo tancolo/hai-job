@@ -140,7 +140,7 @@ $includeItems = @(
 )
 
 # Create a temp staging directory
-$tempDir = Join-Path $env:TEMP "hai_job_build_$version"
+$tempDir = Join-Path ([System.IO.Path]::GetTempPath()) "hai_job_build_$version"
 if (Test-Path $tempDir) { Remove-Item $tempDir -Recurse -Force }
 New-Item -ItemType Directory -Path $tempDir | Out-Null
 
