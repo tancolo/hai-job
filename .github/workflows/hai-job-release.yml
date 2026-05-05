@@ -27,6 +27,19 @@ jobs:
           VERSION=${TAG_NAME#hai-job-v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
       
+      - name: Extract Tag Message
+        id: tag_message
+        run: |
+          MESSAGE=$(git tag -l --format='%(contents)' ${GITHUB_REF#refs/tags/})
+          if [ -z "$MESSAGE" ]; then
+            MESSAGE="Release of Hai Job Tracker v${{ env.VERSION }}"
+          fi
+          {
+            echo "TAG_BODY<<EOF"
+            echo "$MESSAGE"
+            echo "EOF"
+          } >> $GITHUB_ENV
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -35,23 +48,6 @@ jobs:
           prerelease: false
           make_latest: true
           files: hai_job/dist/hai_job_v${{ env.VERSION }}.zip
-          body: |
-            ## 🎉 Hai Job Tracker — Release v${{ env.VERSION }}
-
-            A privacy-first Chrome extension for job seekers to effortlessly capture, track, and manage job applications directly from your browser.
-
-            ### ✨ Core Features
-
-            - **One-Click Scraping**: Auto-extracts job title, company, location, and work type from LinkedIn, Indeed, and Canada's Job Bank.
-            - **Side Panel UI**: Review and save applications without leaving the current tab.
-            - **Dashboard**: Full-featured management view with fuzzy search and multi-criteria filtering (Work Type, Interview Status, Platform).
-            - **Inline Status Editing**: Update interview progress directly in the table; status change date is recorded automatically.
-            - **CSV Export / Import**: Backup and restore all records locally with smart duplicate detection.
-            - **6-Language i18n**: English, Simplified Chinese, Traditional Chinese, Japanese, Korean, French — auto-detected from browser settings.
-            - **Privacy-First**: 100% offline. All data stored in `chrome.storage.local`. No external servers. No tracking.
-
-            ### 📦 Installation
-
-            Download `hai_job_v${{ env.VERSION }}.zip`, unzip it, then load it via `chrome://extensions` → Developer Mode → Load Unpacked.
+          body: ${{ env.TAG_BODY }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
