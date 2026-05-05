@@ -28,6 +28,10 @@ jobs:
           TAG_NAME=${GITHUB_REF#refs/tags/}
           VERSION=${TAG_NAME#hai-job-v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Extract Tag Message to File
+        run: |
+          git for-each-ref --format='%(contents)' refs/tags/${GITHUB_REF#refs/tags/} > github_release_notes.txt
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -36,5 +40,6 @@ jobs:
           prerelease: false
           make_latest: true
           files: hai_job/dist/hai_job_v${{ env.VERSION }}.zip
+          body_path: github_release_notes.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
