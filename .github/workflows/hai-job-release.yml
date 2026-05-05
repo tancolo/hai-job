@@ -28,20 +28,6 @@ jobs:
           TAG_NAME=${GITHUB_REF#refs/tags/}
           VERSION=${TAG_NAME#hai-job-v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-      
-      - name: Extract Tag Message
-        id: tag_message
-        run: |
-          MESSAGE=$(git tag -l --format='%(contents)' ${GITHUB_REF#refs/tags/})
-          if [ -z "$MESSAGE" ]; then
-            MESSAGE="Release of Hai Job Tracker v${{ env.VERSION }}"
-          fi
-          {
-            echo "TAG_BODY<<EOF"
-            echo "$MESSAGE"
-            echo "EOF"
-          } >> $GITHUB_ENV
-
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -50,6 +36,5 @@ jobs:
           prerelease: false
           make_latest: true
           files: hai_job/dist/hai_job_v${{ env.VERSION }}.zip
-          body: ${{ env.TAG_BODY }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
