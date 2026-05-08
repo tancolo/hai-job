@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const SUPPORTED_HOSTS = [
     'linkedin.com',
     'indeed.com',
-    'jobbank.gc.ca'
+    'jobbank.gc.ca',
+    'greenhouse.io'
   ];
 
   function isSupportedSite(hostname) {
@@ -30,7 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const boldedMsg = msgText
       .replace(/LinkedIn/g, '<strong>LinkedIn</strong>')
       .replace(/Indeed/g, '<strong>Indeed</strong>')
-      .replace(/Job Bank/g, '<strong>Job Bank</strong>');
+      .replace(/Job Bank/g, '<strong>Job Bank</strong>')
+      .replace(/Greenhouse/gi, '<strong>Greenhouse</strong>');
     unsupportedMsg.innerHTML = boldedMsg;
     unsupportedBanner.classList.remove('hidden');
   }
@@ -95,6 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
           } else if (hostname.includes('jobbank.gc.ca')) {
             parserFile = 'src/content/parsers/jobbank.js';
             parserFuncName = 'jobbank';
+          } else if (hostname.includes('greenhouse.io')) {
+            parserFile = 'src/content/parsers/greenhouse.js';
+            parserFuncName = 'greenhouse';
           }
 
           if (parserFile) {
