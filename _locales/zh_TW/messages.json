@@ -178,5 +178,8 @@
   },
   "unsupportedSiteMsg": {
     "message": "目前網站暫不支援自動擷取職位資訊。目前已支援：LinkedIn、Indeed、Job Bank。您仍可手動填寫表單並儲存應徵記錄。希望支援此網站？歡迎來信告知："
+  },
+  "optOthers": {
+    "message": "其他"
   }
 }

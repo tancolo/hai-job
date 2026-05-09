@@ -178,5 +178,8 @@
   },
   "unsupportedSiteMsg": {
     "message": "Ce site n'est pas encore pris en charge pour l'extraction automatique. Sites actuellement pris en charge: LinkedIn, Indeed, Job Bank. Vous pouvez remplir le formulaire manuellement. Pour demander la prise en charge, ecrivez-nous:"
+  },
+  "optOthers": {
+    "message": "Autres"
   }
 }
