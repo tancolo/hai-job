@@ -14,6 +14,8 @@ function loadParser(hostname) {
       scriptName = 'indeed.js';
     } else if (hostname.includes('jobbank.gc.ca')) {
       scriptName = 'jobbank.js';
+    } else if (hostname.includes('greenhouse.io')) {
+      scriptName = 'greenhouse.js';
     }
 
     if (!scriptName) {

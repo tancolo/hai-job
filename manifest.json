@@ -20,7 +20,8 @@
     "https://*.linkedin.com/*",
     "https://*.indeed.com/*",
     "https://*.ca.indeed.com/*",
-    "https://www.jobbank.gc.ca/*"
+    "https://www.jobbank.gc.ca/*",
+    "https://*.greenhouse.io/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -44,7 +45,8 @@
         "https://*.linkedin.com/*",
         "https://*.indeed.com/*",
         "https://*.ca.indeed.com/*",
-        "https://www.jobbank.gc.ca/*"
+        "https://www.jobbank.gc.ca/*",
+        "https://*.greenhouse.io/*"
       ]
     }
   ]
