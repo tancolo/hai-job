@@ -177,7 +177,7 @@
     "message": "Extraction automatique non disponible"
   },
   "unsupportedSiteMsg": {
-    "message": "Ce site n'est pas encore pris en charge pour l'extraction automatique. Sites actuellement pris en charge: LinkedIn, Indeed, Job Bank. Vous pouvez remplir le formulaire manuellement. Pour demander la prise en charge, ecrivez-nous:"
+    "message": "Ce site Web n'est pas encore pris en charge pour l'extraction automatique. Actuellement pris en charge : LinkedIn, Indeed, Job Bank, Greenhouse. Vous pouvez toujours remplir le formulaire manuellement. Vous souhaitez que ce site soit pris en charge ? Envoyez-nous un email :"
   },
   "optOthers": {
     "message": "Autres"

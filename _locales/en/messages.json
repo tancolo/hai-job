@@ -177,7 +177,7 @@
     "message": "Auto-extraction not available"
   },
   "unsupportedSiteMsg": {
-    "message": "This website is not yet supported for automatic job info extraction. Currently supported: LinkedIn, Indeed, Job Bank. You can still fill in the form manually and save your application. Want this site supported? Email us:"
+    "message": "This website is not yet supported for automatic job info extraction. Currently supported: LinkedIn, Indeed, Job Bank, Greenhouse. You can still fill in the form manually and save your application. Want this site supported? Email us:"
   },
   "optOthers": {
     "message": "Others"
