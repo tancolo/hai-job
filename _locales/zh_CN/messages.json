@@ -181,5 +181,44 @@
   },
   "optOthers": {
     "message": "其他"
+  },
+  "btnProfile": {
+    "message": "个人资料"
+  },
+  "modalProfileTitle": {
+    "message": "个人资料设置"
+  },
+  "lblFirstName": {
+    "message": "名 (First Name)"
+  },
+  "lblLastName": {
+    "message": "姓 (Last Name)"
+  },
+  "lblEmail": {
+    "message": "邮箱"
+  },
+  "lblPhone": {
+    "message": "电话"
+  },
+  "lblLinkedIn": {
+    "message": "LinkedIn 主页"
+  },
+  "lblGitHub": {
+    "message": "GitHub 主页"
+  },
+  "btnSaveProfile": {
+    "message": "保存资料"
+  },
+  "msgProfileSaved": {
+    "message": "资料已保存！"
+  },
+  "btnAutofill": {
+    "message": "⚡ 一键填充表单"
+  },
+  "msgProfileEmpty": {
+    "message": "请先在 Dashboard 中配置您的个人资料！"
+  },
+  "msgAutofillSuccess": {
+    "message": "表单已自动填充！"
   }
 }

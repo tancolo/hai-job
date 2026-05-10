@@ -181,5 +181,44 @@
   },
   "optOthers": {
     "message": "Autres"
+  },
+  "btnProfile": {
+    "message": "Mon Profil"
+  },
+  "modalProfileTitle": {
+    "message": "Paramètres du Profil"
+  },
+  "lblFirstName": {
+    "message": "Prénom"
+  },
+  "lblLastName": {
+    "message": "Nom"
+  },
+  "lblEmail": {
+    "message": "Email"
+  },
+  "lblPhone": {
+    "message": "Téléphone"
+  },
+  "lblLinkedIn": {
+    "message": "URL LinkedIn"
+  },
+  "lblGitHub": {
+    "message": "URL GitHub"
+  },
+  "btnSaveProfile": {
+    "message": "Enregistrer"
+  },
+  "msgProfileSaved": {
+    "message": "Profil enregistré!"
+  },
+  "btnAutofill": {
+    "message": "⚡ Remplissage Auto"
+  },
+  "msgProfileEmpty": {
+    "message": "Veuillez configurer votre profil dans le Dashboard!"
+  },
+  "msgAutofillSuccess": {
+    "message": "Formulaire rempli!"
   }
 }

@@ -181,5 +181,44 @@
   },
   "optOthers": {
     "message": "その他"
+  },
+  "btnProfile": {
+    "message": "プロフィール"
+  },
+  "modalProfileTitle": {
+    "message": "プロフィール設定"
+  },
+  "lblFirstName": {
+    "message": "名"
+  },
+  "lblLastName": {
+    "message": "姓"
+  },
+  "lblEmail": {
+    "message": "メールアドレス"
+  },
+  "lblPhone": {
+    "message": "電話番号"
+  },
+  "lblLinkedIn": {
+    "message": "LinkedIn URL"
+  },
+  "lblGitHub": {
+    "message": "GitHub URL"
+  },
+  "btnSaveProfile": {
+    "message": "保存"
+  },
+  "msgProfileSaved": {
+    "message": "保存しました！"
+  },
+  "btnAutofill": {
+    "message": "⚡ 自動入力"
+  },
+  "msgProfileEmpty": {
+    "message": "先にDashboardでプロフィールを設定してください！"
+  },
+  "msgAutofillSuccess": {
+    "message": "自動入力しました！"
   }
 }

@@ -181,5 +181,44 @@
   },
   "optOthers": {
     "message": "기타"
+  },
+  "btnProfile": {
+    "message": "프로필"
+  },
+  "modalProfileTitle": {
+    "message": "프로필 설정"
+  },
+  "lblFirstName": {
+    "message": "이름"
+  },
+  "lblLastName": {
+    "message": "성"
+  },
+  "lblEmail": {
+    "message": "이메일"
+  },
+  "lblPhone": {
+    "message": "전화번호"
+  },
+  "lblLinkedIn": {
+    "message": "LinkedIn URL"
+  },
+  "lblGitHub": {
+    "message": "GitHub URL"
+  },
+  "btnSaveProfile": {
+    "message": "저장"
+  },
+  "msgProfileSaved": {
+    "message": "저장되었습니다!"
+  },
+  "btnAutofill": {
+    "message": "⚡ 자동 완성"
+  },
+  "msgProfileEmpty": {
+    "message": "먼저 Dashboard에서 프로필을 설정해주세요!"
+  },
+  "msgAutofillSuccess": {
+    "message": "자동 완성되었습니다!"
   }
 }

@@ -181,5 +181,44 @@
   },
   "optOthers": {
     "message": "其他"
+  },
+  "btnProfile": {
+    "message": "個人資料"
+  },
+  "modalProfileTitle": {
+    "message": "個人資料設置"
+  },
+  "lblFirstName": {
+    "message": "名 (First Name)"
+  },
+  "lblLastName": {
+    "message": "姓 (Last Name)"
+  },
+  "lblEmail": {
+    "message": "郵箱"
+  },
+  "lblPhone": {
+    "message": "電話"
+  },
+  "lblLinkedIn": {
+    "message": "LinkedIn 主頁"
+  },
+  "lblGitHub": {
+    "message": "GitHub 主頁"
+  },
+  "btnSaveProfile": {
+    "message": "保存資料"
+  },
+  "msgProfileSaved": {
+    "message": "資料已保存！"
+  },
+  "btnAutofill": {
+    "message": "⚡ 一鍵填充表單"
+  },
+  "msgProfileEmpty": {
+    "message": "請先在 Dashboard 中配置您的個人資料！"
+  },
+  "msgAutofillSuccess": {
+    "message": "表單已自動填充！"
   }
 }

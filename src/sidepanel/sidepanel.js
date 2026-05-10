@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const unsupportedBanner = document.getElementById('unsupported-banner');
   const unsupportedMsg = document.getElementById('unsupported-msg');
   const unsupportedClose = document.getElementById('unsupported-close');
+  const btnAutofill = document.getElementById('btn-autofill');
+  const autofillSection = document.getElementById('autofill-section');
   let loadingTimeout;
 
   // Supported job site hostnames (must match manifest.json host_permissions)
@@ -100,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
           } else if (hostname.includes('greenhouse.io')) {
             parserFile = 'src/content/parsers/greenhouse.js';
             parserFuncName = 'greenhouse';
+            autofillSection.classList.remove('hidden');
           }
 
           if (parserFile) {
@@ -255,6 +258,29 @@ document.addEventListener('DOMContentLoaded', () => {
   btnViewAll.addEventListener('click', () => {
     openDashboard();
     window.close();
+  });
+
+  // Handle Autofill Button
+  btnAutofill.addEventListener('click', async () => {
+    chrome.storage.local.get(['userProfile'], async (result) => {
+      const p = result.userProfile;
+      if (!p || (!p.firstName && !p.lastName && !p.email)) {
+        alert(chrome.i18n.getMessage("msgProfileEmpty") || "Please configure your Profile in Dashboard first!");
+        openDashboard();
+        return;
+      }
+      
+      try {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (tab) {
+          chrome.tabs.sendMessage(tab.id, { action: 'autofill_greenhouse', profile: p }, (response) => {
+            showToast(chrome.i18n.getMessage("msgAutofillSuccess") || "Form autofilled!");
+          });
+        }
+      } catch (err) {
+        console.error("Autofill failed", err);
+      }
+    });
   });
 
   // Show success toast

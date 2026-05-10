@@ -14,6 +14,7 @@
       <div class="header-content">
         <h1 data-i18n="dashTitle">Hai Job 投递收藏列表</h1>
         <div class="header-actions">
+          <button id="btn-my-profile" class="btn secondary" data-i18n="btnProfile">个人资料</button>
           <input type="file" id="csv-file-input" accept=".csv" class="hidden">
           <button id="btn-import-csv" class="btn secondary" data-i18n="btnImport">导入 CSV</button>
           <button id="btn-export-csv" class="btn secondary" data-i18n="btnExport">导出 CSV</button>
@@ -121,6 +122,49 @@
         <div class="modal-actions">
           <button id="btn-cancel-import" class="btn secondary" data-i18n="btnCancel">取消</button>
           <button id="btn-confirm-import" class="btn primary" data-i18n="btnConfirm">确认导入</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="modal hidden">
+      <div class="modal-content profile-modal-content">
+        <div class="modal-header">
+          <h2 data-i18n="modalProfileTitle">个人资料设置</h2>
+          <button id="btn-close-profile" class="btn-close">&times;</button>
+        </div>
+        <div class="profile-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="prof-first-name" data-i18n="lblFirstName">名</label>
+              <input type="text" id="prof-first-name" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="prof-last-name" data-i18n="lblLastName">姓</label>
+              <input type="text" id="prof-last-name" class="form-control">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="prof-email" data-i18n="lblEmail">邮箱</label>
+              <input type="email" id="prof-email" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="prof-phone" data-i18n="lblPhone">电话</label>
+              <input type="text" id="prof-phone" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="prof-linkedin" data-i18n="lblLinkedIn">LinkedIn 主页</label>
+            <input type="url" id="prof-linkedin" class="form-control" placeholder="https://www.linkedin.com/in/...">
+          </div>
+          <div class="form-group">
+            <label for="prof-github" data-i18n="lblGitHub">GitHub 主页</label>
+            <input type="url" id="prof-github" class="form-control" placeholder="https://github.com/...">
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-save-profile" class="btn primary" data-i18n="btnSaveProfile">保存资料</button>
         </div>
       </div>
     </div>

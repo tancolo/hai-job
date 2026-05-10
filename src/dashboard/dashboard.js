@@ -323,6 +323,53 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData(); // Re-render table
   });
 
+  // --- Profile Settings Logic ---
+  const btnMyProfile = document.getElementById('btn-my-profile');
+  const profileModal = document.getElementById('profile-modal');
+  const btnCloseProfile = document.getElementById('btn-close-profile');
+  const btnSaveProfile = document.getElementById('btn-save-profile');
+
+  const inputs = {
+    firstName: document.getElementById('prof-first-name'),
+    lastName: document.getElementById('prof-last-name'),
+    email: document.getElementById('prof-email'),
+    phone: document.getElementById('prof-phone'),
+    linkedin: document.getElementById('prof-linkedin'),
+    github: document.getElementById('prof-github')
+  };
+
+  btnMyProfile.addEventListener('click', () => {
+    chrome.storage.local.get(['userProfile'], (result) => {
+      const p = result.userProfile || {};
+      inputs.firstName.value = p.firstName || '';
+      inputs.lastName.value = p.lastName || '';
+      inputs.email.value = p.email || '';
+      inputs.phone.value = p.phone || '';
+      inputs.linkedin.value = p.linkedin || '';
+      inputs.github.value = p.github || '';
+      profileModal.classList.remove('hidden');
+    });
+  });
+
+  btnCloseProfile.addEventListener('click', () => {
+    profileModal.classList.add('hidden');
+  });
+
+  btnSaveProfile.addEventListener('click', () => {
+    const p = {
+      firstName: inputs.firstName.value.trim(),
+      lastName: inputs.lastName.value.trim(),
+      email: inputs.email.value.trim(),
+      phone: inputs.phone.value.trim(),
+      linkedin: inputs.linkedin.value.trim(),
+      github: inputs.github.value.trim()
+    };
+    chrome.storage.local.set({ userProfile: p }, () => {
+      alert(chrome.i18n.getMessage("msgProfileSaved") || "Profile saved!");
+      profileModal.classList.add('hidden');
+    });
+  });
+
   // Initial load
   loadData();
 });

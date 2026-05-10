@@ -72,3 +72,60 @@ window.HaiJobParsers.greenhouse = function() {
 
   return data;
 };
+
+// Listen for autofill messages from sidepanel
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === 'autofill_greenhouse' && request.profile) {
+    const p = request.profile;
+    
+    const setVal = (selector, val) => {
+      if (!val) return;
+      const el = document.querySelector(selector);
+      if (el) {
+        el.value = val;
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    };
+
+    // Standard IDs
+    setVal('#first_name', p.firstName);
+    setVal('#last_name', p.lastName);
+    setVal('#email', p.email);
+    setVal('#phone', p.phone);
+
+    // Fuzzy matching for custom fields (LinkedIn / GitHub)
+    if (p.linkedin || p.github) {
+      const labels = Array.from(document.querySelectorAll('label'));
+      labels.forEach(label => {
+        const text = label.innerText.toLowerCase();
+        // Check if label contains linkedin or github
+        let targetVal = null;
+        if (p.linkedin && text.includes('linkedin')) targetVal = p.linkedin;
+        else if (p.github && text.includes('github')) targetVal = p.github;
+        
+        if (targetVal) {
+          // Find the nearest input within or next to this label
+          // In greenhouse, usually label contains the input or input is sibling
+          let input = label.querySelector('input[type="text"], input[type="url"]');
+          if (!input && label.htmlFor) {
+            input = document.getElementById(label.htmlFor);
+          }
+          if (!input) {
+             // Try to find an input in the same parent container
+             const parent = label.closest('div');
+             if (parent) input = parent.querySelector('input[type="text"], input[type="url"]');
+          }
+
+          if (input) {
+            input.value = targetVal;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
+      });
+    }
+
+    sendResponse({ success: true });
+  }
+});
