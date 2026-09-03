@@ -10,11 +10,11 @@ $ErrorActionPreference = "Stop"
 $ProjectRoot = $PSScriptRoot
 $ManifestPath = Join-Path $ProjectRoot "manifest.json"
 
-# ─── Color helpers ───────────────────────────────────────────────────────────
-function Write-OK   { param($msg) Write-Host "  ✅ $msg" -ForegroundColor Green }
-function Write-WARN { param($msg) Write-Host "  ⚠️  $msg" -ForegroundColor Yellow }
-function Write-ERR  { param($msg) Write-Host "  ❌ $msg" -ForegroundColor Red }
-function Write-INFO { param($msg) Write-Host "  ℹ️  $msg" -ForegroundColor Cyan }
+# Color helpers
+function Write-OK   { param($msg) Write-Host "  [OK] $msg" -ForegroundColor Green }
+function Write-WARN { param($msg) Write-Host "  [WARN] $msg" -ForegroundColor Yellow }
+function Write-ERR  { param($msg) Write-Host "  [ERROR] $msg" -ForegroundColor Red }
+function Write-INFO { param($msg) Write-Host "  [INFO] $msg" -ForegroundColor Cyan }
 
 Write-Host ""
 Write-Host "======================================================" -ForegroundColor Blue
@@ -24,7 +24,7 @@ Write-Host ""
 
 $checksPassed = $true
 
-# ─── STEP 1: Read manifest.json ───────────────────────────────────────────────
+# STEP 1: Read manifest.json
 Write-Host "[ Step 1 ] Reading manifest.json ..." -ForegroundColor White
 if (-not (Test-Path $ManifestPath)) {
     Write-ERR "manifest.json not found in project root!"
@@ -41,7 +41,7 @@ Write-INFO "Version           : $version"
 Write-INFO "Manifest version  : $($manifest.manifest_version)"
 Write-Host ""
 
-# ─── STEP 2: Manifest V3 check ────────────────────────────────────────────────
+# STEP 2: Manifest V3 check
 Write-Host "[ Step 2 ] Checking Manifest Version ..." -ForegroundColor White
 if ($manifest.manifest_version -eq 3) {
     Write-OK "Manifest V3 confirmed (required by Chrome Web Store)"
@@ -51,7 +51,7 @@ if ($manifest.manifest_version -eq 3) {
 }
 Write-Host ""
 
-# ─── STEP 3: Required files check ─────────────────────────────────────────────
+# STEP 3: Required files check
 Write-Host "[ Step 3 ] Checking required files & directories ..." -ForegroundColor White
 
 $requiredItems = @(
@@ -73,7 +73,7 @@ foreach ($item in $requiredItems) {
 }
 Write-Host ""
 
-# ─── STEP 4: Icon sizes check ─────────────────────────────────────────────────
+# STEP 4: Icon sizes check
 Write-Host "[ Step 4 ] Checking required icon sizes ..." -ForegroundColor White
 $requiredIcons = @("icon_16.png", "icon_32.png", "icon_48.png", "icon_128.png")
 foreach ($icon in $requiredIcons) {
@@ -81,12 +81,12 @@ foreach ($icon in $requiredIcons) {
     if (Test-Path $iconPath) {
         Write-OK "$icon"
     } else {
-        Write-WARN "$icon not found — recommended for Chrome Web Store"
+        Write-WARN "$icon not found - recommended for Chrome Web Store"
     }
 }
 Write-Host ""
 
-# ─── STEP 5: Dangerous files check ────────────────────────────────────────────
+# STEP 5: Dangerous files check
 Write-Host "[ Step 5 ] Checking for files that must NOT be packaged ..." -ForegroundColor White
 $forbiddenPatterns = @(".git", "node_modules", "test", "bugs", "PRD", "docs", ".gitignore", "README.md", "README_CN.md", "build_extension.ps1", "*.zip")
 $foundForbidden = $false
@@ -102,7 +102,7 @@ if (-not $foundForbidden) {
 }
 Write-Host ""
 
-# ─── STEP 6: Abort if critical checks failed ──────────────────────────────────
+# STEP 6: Abort if critical checks failed
 if (-not $checksPassed) {
     Write-Host "======================================================" -ForegroundColor Red
     Write-ERR "Pre-flight checks FAILED. Please fix the issues above before packaging."
@@ -113,7 +113,7 @@ if (-not $checksPassed) {
 Write-Host "[ Step 6 ] All critical checks passed. Proceeding to package ..." -ForegroundColor White
 Write-Host ""
 
-# ─── STEP 7: Create output dir and ZIP ────────────────────────────────────────
+# STEP 7: Create output dir and ZIP
 $outputDir  = Join-Path $ProjectRoot "dist"
 $zipName    = "hai_job_v$version.zip"
 $zipPath    = Join-Path $outputDir $zipName
@@ -159,14 +159,14 @@ Remove-Item $tempDir -Recurse -Force
 
 Write-Host ""
 Write-Host "======================================================" -ForegroundColor Green
-Write-Host "  ✅ Package created successfully!" -ForegroundColor Green
-Write-Host "  📦 File : dist\$zipName" -ForegroundColor Green
+Write-Host "  [OK] Package created successfully!" -ForegroundColor Green
+Write-Host "  [FILE] dist\$zipName" -ForegroundColor Green
 $zipSize = [math]::Round((Get-Item $zipPath).Length / 1KB, 1)
-Write-Host "  📏 Size : $zipSize KB" -ForegroundColor Green
+Write-Host "  [SIZE] $zipSize KB" -ForegroundColor Green
 Write-Host "======================================================" -ForegroundColor Green
 Write-Host ""
 
-# ─── STEP 8: Extract ZIP for Load Unpacked testing ────────────────────────────
+# STEP 8: Extract ZIP for Load Unpacked testing
 Write-Host "[ Step 8 ] Extracting ZIP for Load Unpacked testing ..." -ForegroundColor White
 $testUnpackDir = Join-Path $outputDir "test_unpack"
 if (Test-Path $testUnpackDir) {
@@ -176,10 +176,10 @@ Expand-Archive -Path $zipPath -DestinationPath $testUnpackDir -Force
 
 Write-Host ""
 Write-Host "======================================================" -ForegroundColor Cyan
-Write-Host "  🧪 Load Unpacked Test Folder Ready!" -ForegroundColor Cyan
-Write-Host "  📂 Path: dist\test_unpack\" -ForegroundColor Cyan
-Write-Host "  ➡️  Open chrome://extensions/ → Enable Developer Mode" -ForegroundColor Cyan
-Write-Host "     → Load unpacked → Select dist\test_unpack\" -ForegroundColor Cyan
+Write-Host "  [TEST] Load Unpacked Test Folder Ready!" -ForegroundColor Cyan
+Write-Host "  [PATH] dist\test_unpack\" -ForegroundColor Cyan
+Write-Host "  [NEXT] Open chrome://extensions/ -> Enable Developer Mode" -ForegroundColor Cyan
+Write-Host "         -> Load unpacked -> Select dist\test_unpack\" -ForegroundColor Cyan
 Write-Host "======================================================" -ForegroundColor Cyan
 Write-Host ""
 Write-INFO "When ready, upload dist\$zipName to Chrome Web Store Developer Dashboard"
