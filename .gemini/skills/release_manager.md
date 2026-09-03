@@ -10,9 +10,9 @@ This skill automates the generation of multi-language "What's New" content for t
 ## Workflow
 
 ### Phase 1: Extraction & English Draft
-1. **Locate Latest Version**: Parse `.\hai_job\CHANGELOG.md` to find the topmost version entry (e.g., `## [1.1.0]`).
+1. **Locate Latest Version**: Parse `.\CHANGELOG.md` from the standalone repository root to find the topmost version entry (e.g., `## [1.1.0]`).
 2. **Extract Content**: Capture all text between the latest version header and the next version header (or end of file).
-3. **Create Directory**: Ensure `.\hai_job\docs\web_store\v[version]\` exists.
+3. **Create Directory**: Ensure `.\docs\web_store\v[version]\` exists.
 4. **Generate Draft**: Create `what_is_new_v[version].md` with the extracted English content.
 5. **Report & Pause**: Display the English content in the chat and wait for user review/modification of the file.
 

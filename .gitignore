@@ -3,6 +3,7 @@ node_modules/
 bugs/
 PRD/
 test/chrome_test_profiles/
+debug/
 
 # Build Artifacts
 dist/
