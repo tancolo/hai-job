@@ -16,7 +16,7 @@ This skill should be considered when the user mentions any of the following (in 
 Packages the **Hai Job** Chrome extension into a clean, version-tagged ZIP file ready for upload to the Chrome Web Store.
 
 ## Project Context
-- **Project Root**: `d:\Dev-Env\Antigravity_Projects\hai_job`
+- **Project Root**: the repository root
 - **Build Script**: `build_extension.ps1` (located in project root)
 - **Output Directory**: `dist\`
 - **Version Source**: Automatically read from `manifest.json`
@@ -52,8 +52,7 @@ After the script completes, report back to the user with:
 - Any warnings or errors from the checklist
 
 ## Working Directory
-Always run commands from the project root:
-`d:\Dev-Env\Antigravity_Projects\hai_job`
+Always run commands from the repository root.
 
 ## Success Criteria
 The skill is complete when:

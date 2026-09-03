@@ -19,7 +19,6 @@ jobs:
       
       - name: Run Build Script
         shell: pwsh
-        working-directory: ./hai_job
         run: ./build_extension.ps1
       
       - name: Extract Version from Tag
@@ -37,7 +36,7 @@ jobs:
               next;
             }
             in_section { print }
-          ' hai_job/CHANGELOG.md > latest_release_notes.txt
+          ' CHANGELOG.md > latest_release_notes.txt
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -46,7 +45,7 @@ jobs:
           draft: false
           prerelease: false
           make_latest: true
-          files: hai_job/dist/hai_job_v${{ env.VERSION }}.zip
+          files: dist/hai_job_v${{ env.VERSION }}.zip
           body_path: latest_release_notes.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
